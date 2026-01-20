@@ -16,7 +16,7 @@ const MainNavigator = () => {
                 header: () => <NavigationHeader />,
             }}
         >
-            <Stack.Screen name="MainTabs" component={TabNavigator} />
+            <Stack.Screen name="Hospital UI" component={TabNavigator} />
             <Stack.Screen name="Departments" component={Departments} />
             <Stack.Screen name="DepartmentDetails" component={DepartmentDetails} />
             <Stack.Screen name="Doctors" component={Doctors} />
