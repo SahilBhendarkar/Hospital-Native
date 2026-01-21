@@ -7,6 +7,8 @@ import AppointmentAndEvents from '../screens/AppointmentAndEvents';
 import About from '../screens/About';
 import Departments from '../screens/Departments';
 import Doctors from '../screens/Doctors';
+import PatientList from '../screens/PatientList';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -41,9 +43,10 @@ const TabNavigator = () => {
         >
             <Tab.Screen name="Home" component={HomeScreen} />
             <Tab.Screen name="Departments" component={Departments} />
-            <Tab.Screen name="Doctors" component={Doctors} />
+            <Tab.Screen name="Patients" component={PatientList} />
             <Tab.Screen name="Appointment" component={AppointmentAndEvents} />
             <Tab.Screen name="About" component={About} />
+
         </Tab.Navigator>
     );
 };

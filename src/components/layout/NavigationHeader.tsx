@@ -34,7 +34,7 @@ const NavigationHeader = () => {
 
                 <Text style={styles.title}>{route.name}</Text>
 
-                <TouchableOpacity onPress={() => openLink('tel:+919099433366')}>
+                <TouchableOpacity onPress={() => openLink('tel:+919356595332')}>
                     <View style={styles.callButton}>
                         <Feather name="phone" size={16} color="white" />
                     </View>

@@ -5,6 +5,7 @@ import NavigationHeader from '../components/layout/NavigationHeader';
 import DepartmentDetails from '../screens/DepartmentDetails';
 import Departments from '../screens/Departments';
 import Doctors from '../screens/Doctors';
+import PatientList from '../screens/PatientList';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ const MainNavigator = () => {
             <Stack.Screen name="Departments" component={Departments} />
             <Stack.Screen name="DepartmentDetails" component={DepartmentDetails} />
             <Stack.Screen name="Doctors" component={Doctors} />
+            <Stack.Screen name="Patients" component={PatientList} />
 
         </Stack.Navigator>
     );
