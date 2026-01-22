@@ -3,7 +3,6 @@ import {
     View,
     ScrollView,
     StyleSheet,
-    Modal,
     TouchableOpacity,
     Text,
 } from 'react-native';
@@ -14,11 +13,28 @@ import PatientReview from './PatientReview';
 import Footer from '../components/layout/Footer';
 import Services from './Services';
 
+import { useAuth } from '../context/AuthContext';
+import LoginModal from '../components/auth/LoginModal';
+
 const HomeScreen = () => {
-    const [showLoginModal, setShowLoginModal] = useState(false);
+    const { user, logout } = useAuth();
+    const [loginVisible, setLoginVisible] = useState(false);
 
     return (
         <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.headerTitle}>Hospital App</Text>
+                {user ? (
+                    <TouchableOpacity onPress={logout} style={styles.authButton}>
+                        <Text style={styles.authButtonText}>Logout ({user.name})</Text>
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity onPress={() => setLoginVisible(true)} style={styles.authButton}>
+                        <Text style={styles.authButtonText}>Login</Text>
+                    </TouchableOpacity>
+                )}
+            </View>
+
             <ScrollView showsVerticalScrollIndicator={false}>
                 <IndexSlider />
                 <OurTeam />
@@ -27,27 +43,7 @@ const HomeScreen = () => {
                 <Footer />
             </ScrollView>
 
-            <Modal visible={showLoginModal} transparent animationType="slide">
-                <View style={styles.modalOverlay}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>Login to Hospital</Text>
-
-                        <TouchableOpacity
-                            style={styles.loginButtonModal}
-                            onPress={() => setShowLoginModal(false)}
-                        >
-                            <Text style={styles.loginButtonText}>Login</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={styles.closeButton}
-                            onPress={() => setShowLoginModal(false)}
-                        >
-                            <Text style={styles.closeButtonText}>Cancel</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
+            <LoginModal visible={loginVisible} onClose={() => setLoginVisible(false)} />
         </SafeAreaView>
     );
 };
@@ -56,43 +52,30 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#f9fafb' },
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        justifyContent: 'center',
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        backgroundColor: '#fff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e5e7eb',
     },
-    modalContent: {
-        backgroundColor: 'white',
-        borderRadius: 16,
-        padding: 24,
-        width: '80%',
-    },
-    modalTitle: {
-        fontSize: 22,
+    headerTitle: {
+        fontSize: 20,
         fontWeight: '700',
-        textAlign: 'center',
-        marginBottom: 16,
+        color: '#111827',
     },
-    loginButtonModal: {
-        backgroundColor: '#2563eb',
-        paddingVertical: 12,
-        borderRadius: 8,
-        marginBottom: 12,
+    authButton: {
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        backgroundColor: '#f3f4f6',
+        borderRadius: 6,
     },
-    loginButtonText: {
-        color: 'white',
-        textAlign: 'center',
+    authButtonText: {
+        fontSize: 14,
         fontWeight: '600',
-    },
-    closeButton: {
-        borderWidth: 1,
-        borderColor: '#e5e7eb',
-        borderRadius: 8,
-        paddingVertical: 12,
-    },
-    closeButtonText: {
-        textAlign: 'center',
-        color: '#6b7280',
+        color: '#2563eb',
     },
 });

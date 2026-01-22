@@ -1,5 +1,5 @@
-import { Text, StyleSheet, Pressable, View } from "react-native";
-import type { Patient } from "../../data/patient";
+import { Text, StyleSheet, Pressable } from "react-native";
+import type { Patient } from "../../api/types";
 
 interface Props {
     patient: Patient;

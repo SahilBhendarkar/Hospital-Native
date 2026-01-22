@@ -19,11 +19,3 @@ export const patients: Patient[] = [
 ];
 
 
-export const getPatients = (page: number, limit = 5): Patient[] => {
-    return Array.from({ length: limit }, (_, i) => ({
-        id: `p-${page}-${i}`,
-        name: `Patient ${page * limit + i + 1}`,
-        age: 20 + (i % 40),
-        condition: "General Consultation",
-    }));
-};
