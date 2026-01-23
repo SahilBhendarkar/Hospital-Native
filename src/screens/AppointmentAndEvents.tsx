@@ -38,24 +38,7 @@ const events = [
   },
 ];
 
-const EventCard = ({ item }: { item: typeof events[0] }) => (
-  <View style={styles.eventCard}>
-    <Image source={item.image} style={styles.eventImage} />
-    <View style={styles.eventContent}>
-      <View style={styles.eventHeader}>
-        <View style={styles.dateTag}>
-          <Text style={styles.dateText}>{item.date}</Text>
-        </View>
-        <Text style={styles.eventIcon}>⭐</Text>
-      </View>
-      <Text style={styles.eventTitle}>{item.title}</Text>
-      <Text style={styles.eventDescription}>{item.description}</Text>
-      <TouchableOpacity>
-        <Text style={styles.readMoreLink}>Read More</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-);
+
 
 const AppointmentAndEvents = () => {
   const [formData, setFormData] = useState({
@@ -187,34 +170,6 @@ const AppointmentAndEvents = () => {
             </View>
           </Animated.View>
 
-          {/* Events Section */}
-          <Animated.View
-            style={[
-              styles.eventsSection,
-              {
-                opacity: eventsOpacity,
-              },
-            ]}
-          >
-            <View style={styles.eventsHeader}>
-              <View style={styles.upcomingTag}>
-                <Text style={styles.upcomingTagText}>📍 Upcoming Events</Text>
-              </View>
-              <Text style={styles.eventsTitle}>Medical Community Events</Text>
-            </View>
-
-            <FlatList
-              data={events}
-              renderItem={({ item }) => <EventCard item={item} />}
-              keyExtractor={(item) => item.id}
-              scrollEnabled={false}
-              contentContainerStyle={styles.eventsList}
-            />
-
-            <TouchableOpacity style={styles.viewAllEventsButton}>
-              <Text style={styles.viewAllEventsButtonText}>👥 View All Events</Text>
-            </TouchableOpacity>
-          </Animated.View>
         </View>
       </ScrollView>
     </View>
@@ -299,13 +254,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
   },
-  eventsSection: {
-    marginBottom: 24,
-  },
-  eventsHeader: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
+ 
   upcomingTag: {
     backgroundColor: '#d1fae5',
     paddingVertical: 6,
@@ -317,85 +266,6 @@ const styles = StyleSheet.create({
     color: '#047857',
     fontWeight: '600',
     fontSize: 12,
-  },
-  eventsTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#1f2937',
-  },
-  eventsList: {
-    gap: 16,
-    marginBottom: 16,
-  },
-  eventCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    overflow: 'hidden',
-    flexDirection: 'row',
-    gap: 12,
-    padding: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  eventImage: {
-    width: 80,
-    height: 70,
-    borderRadius: 12,
-  },
-  eventContent: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  eventHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  dateTag: {
-    backgroundColor: '#d1fae5',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  dateText: {
-    color: '#047857',
-    fontWeight: '600',
-    fontSize: 11,
-  },
-  eventIcon: {
-    fontSize: 14,
-  },
-  eventTitle: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#1f2937',
-    marginBottom: 4,
-  },
-  eventDescription: {
-    fontSize: 12,
-    color: '#666',
-    lineHeight: 16,
-    marginBottom: 6,
-  },
-  readMoreLink: {
-    color: '#047857',
-    fontWeight: '600',
-    fontSize: 12,
-  },
-  viewAllEventsButton: {
-    backgroundColor: '#059669',
-    paddingVertical: 12,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  viewAllEventsButtonText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 14,
   },
 });
 

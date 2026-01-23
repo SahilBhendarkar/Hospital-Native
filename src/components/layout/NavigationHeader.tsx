@@ -1,18 +1,34 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Platform, Alert } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "../../context/AuthContext";
+import { Image } from "react-native"; 
 
 const NavigationHeader = () => {
     const navigation = useNavigation<any>();
     const route = useRoute();
+    const { logout, user } = useAuth();
 
-    const openLink = async (url: string) => {
-        const supported = await Linking.canOpenURL(url);
-        if (supported) {
-            await Linking.openURL(url);
-        }
+    const handleLogout = () => {
+        Alert.alert(
+            'Logout',
+            'Are you sure you want to logout?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Logout',
+                    style: 'destructive',
+                    onPress: async () => {
+                        await logout();
+                    },
+                },
+            ]
+        );
     };
 
     const canGoBack = navigation.canGoBack();
@@ -27,18 +43,24 @@ const NavigationHeader = () => {
                         </TouchableOpacity>
                     ) : (
                         <View style={styles.logo}>
-                            <Text style={styles.logoText}>H</Text>
+                            <Image
+                                source={require('../../../assets/hospital.png')}
+                                style={styles.logoImage}
+                                resizeMode="contain"
+                            />
                         </View>
                     )}
                 </View>
 
                 <Text style={styles.title}>{route.name}</Text>
 
-                <TouchableOpacity onPress={() => openLink('tel:+919356595332')}>
-                    <View style={styles.callButton}>
-                        <Feather name="phone" size={16} color="white" />
-                    </View>
-                </TouchableOpacity>
+                <View style={styles.rightActions}>
+                    {user && (
+                        <TouchableOpacity onPress={handleLogout} style={styles.actionButton}>
+                            <Feather name="log-out" size={20} color="#ef4444" />
+                        </TouchableOpacity>
+                    )}
+                </View>
             </View>
         </SafeAreaView>
     );
@@ -81,17 +103,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#2563eb',
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden',
     },
-    logoText: {
-        color: 'white',
-        fontWeight: 'bold',
+    logoImage: {
+        width: 24,
+        height: 24,
     },
-    callButton: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-        backgroundColor: '#10b981',
-        justifyContent: 'center',
+    rightActions: {
+        flexDirection: 'row',
         alignItems: 'center',
+        gap: 12,
+    },
+    actionButton: {
     },
 });

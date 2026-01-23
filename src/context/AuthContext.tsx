@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(false);
     };
 
+
     const logout = async () => {
         setIsLoading(true);
         setUser(null);
