@@ -233,8 +233,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 20,
-        paddingTop: 14,         
-        paddingBottom: 16,       
+        paddingTop: 14,
+        paddingBottom: 16,
         backgroundColor: '#fff',
     },
     headerLeft: {
@@ -306,13 +306,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderBottomLeftRadius: 24,
         borderBottomRightRadius: 24,
-
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.08,
         shadowRadius: 12,
         elevation: 6,
-
         marginBottom: 24,
     },
 
@@ -333,6 +331,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '700',
         color: '#111827',
+        marginBottom: 14,
+
     },
     seeAllText: {
         fontSize: 14,
