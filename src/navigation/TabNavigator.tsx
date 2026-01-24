@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import About from '../screens/About';
 import PatientList from '../screens/PatientList';
 import { View, StyleSheet, Platform } from 'react-native';
+import CameraScreen from "../screens/UploadTestScreen"
 
 const Tab = createBottomTabNavigator();
 
@@ -60,6 +61,7 @@ const TabNavigator = () => {
         >
             <Tab.Screen name="Home" component={HomeScreen} />
             <Tab.Screen name="Patients" component={PatientList} />
+            <Tab.Screen name="Camera" component={CameraScreen} />
             <Tab.Screen name="About" component={About} />
         </Tab.Navigator>
     );

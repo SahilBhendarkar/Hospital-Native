@@ -1,3 +1,4 @@
+import * as Linking from "expo-linking";
 import React, { useState } from 'react';
 import {
     View,
@@ -22,6 +23,7 @@ import UpcomingAppointmentCard from '../components/ui/UpcomingAppointmentCard';
 import HealthTipCard from '../components/ui/HealthTipCard';
 
 import { healthStats, upcomingAppointments, healthTips } from '../data/mockHealthData';
+import TestNotificationButton from '../components/notifications/TestNotificationButton';
 
 type RootStackParamList = {
     Doctors: undefined;
@@ -55,8 +57,11 @@ const HomeScreen = () => {
     };
 
     const formatDate = () => {
-        const options: Intl.DateTimeFormatOptions = { weekday: 'long', month: 'long', day: 'numeric' };
-        return new Date().toLocaleDateString('en-US', options);
+        return new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+        });
     };
 
     return (
@@ -217,6 +222,46 @@ const HomeScreen = () => {
                             />
                         </Animated.View>
                     ))}
+                </View>
+
+                {/*  Test Notification Button  */}
+                <View style={[styles.sectionContainer, styles.lastSection]}>
+                    <Animated.Text
+                        style={styles.sectionTitle}
+                        entering={FadeIn.delay(1200)}
+                    >
+                        Notification Button
+                    </Animated.Text>
+                    <TestNotificationButton />
+                </View>
+
+
+                {/*  Manual Testing of links Button  */}
+                <View style={[styles.sectionContainer, styles.lastSection]}>
+                    <Animated.Text
+                        style={styles.sectionTitle}
+                        entering={FadeIn.delay(1200)}
+                    >
+                        Manual Tesing of Links
+                    </Animated.Text>
+                    <TouchableOpacity
+                        style={{
+                            padding: 16,
+                            backgroundColor: "#2563eb",
+                            borderRadius: 8,
+                            margin: 16,
+                        }}
+                        onPress={() => {
+                            const url = Linking.createURL("/departments");
+                            console.log("Opening deep link:", url);
+                            Linking.openURL(url);
+                        }}
+                    >
+
+                        <Text style={{ color: "#fff", textAlign: "center" }}>
+                            Test Deep Link → Departments (Expo Go)
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </SafeAreaView>

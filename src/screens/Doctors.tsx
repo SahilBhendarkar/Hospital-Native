@@ -9,11 +9,14 @@ import {
     Dimensions,
 } from "react-native";
 import { doctors } from "../data/doctors";
+import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = width / 2 - 24;
 
 const Doctors = () => {
+    const navigation = useNavigation<any>();
+
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Our Doctors</Text>
@@ -24,7 +27,10 @@ const Doctors = () => {
                 numColumns={2}
                 columnWrapperStyle={styles.row}
                 renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.card}>
+                    <TouchableOpacity
+                        style={styles.card}
+                        onPress={() => navigation.navigate("DoctorDetails", { doctor: item })}
+                    >
                         <Image source={item.image} style={styles.image} />
                         <View style={styles.cardContent}>
                             <Text style={styles.name}>{item.name}</Text>

@@ -6,6 +6,7 @@ export interface Department {
     description: string;
     image: ImageSourcePropType;
     screen: string;
+    services?: string[];
 }
 
 export const departments: Department[] = [
@@ -16,6 +17,14 @@ export const departments: Department[] = [
             "A condition where the blood vessels supplying the heart become blocked.",
         image: require("../../assets/departments/cardiology.jpg"),
         screen: "Cardiology",
+        services: [
+            "Advanced diagnostics",
+            "Expert specialist consultations",
+            "Modern treatment facilities",
+            "24x7 patient care",
+            "Minimally invasive procedures",
+            "Post-treatment rehabilitation"
+        ]
     },
     {
         id: 2,

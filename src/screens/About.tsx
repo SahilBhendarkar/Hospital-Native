@@ -10,6 +10,8 @@ import {
     TouchableOpacity,
     Linking,
 } from "react-native";
+const surgeryImage = require("../../assets/images/surgery.png");
+
 
 const { width } = Dimensions.get("window");
 
@@ -86,10 +88,8 @@ const About = () => {
                                 },
                             ]}
                         >
-                            <Image
-                                source={require("../../assets/images/surgery.png")}
-                                style={styles.image}
-                            />
+                            <Image source={surgeryImage} style={styles.image} />
+
                         </Animated.View>
 
                         {/* Text Section */}

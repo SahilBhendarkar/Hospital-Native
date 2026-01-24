@@ -3,6 +3,7 @@
     "name": "Hospital-Mobile",
     "slug": "Hospital-Mobile",
     "version": "1.0.0",
+    "scheme": "hospital-mobile",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

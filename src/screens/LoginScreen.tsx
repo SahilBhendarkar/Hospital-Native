@@ -12,7 +12,7 @@ import {
     ActivityIndicator,
     Alert,
 } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; // ← Add this import
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../context/AuthContext';
 import { loginUser } from '../api/auth';
@@ -22,7 +22,7 @@ const LoginScreen = () => {
     const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false); // ← New state for toggle
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({ email: '', password: '' });
 
@@ -58,20 +58,19 @@ const LoginScreen = () => {
             const response = await loginUser(email, password);
             await login(response.token, response.user);
 
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'Home' as never }],
-            });
         } catch (error) {
             Alert.alert(
                 'Login Failed',
-                error instanceof Error ? error.message : 'Invalid credentials. Please try again.',
+                error instanceof Error
+                    ? error.message
+                    : 'Invalid credentials. Please try again.',
                 [{ text: 'OK' }]
             );
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <KeyboardAvoidingView
@@ -124,7 +123,7 @@ const LoginScreen = () => {
                                     setPassword(text);
                                     setErrors({ ...errors, password: '' });
                                 }}
-                                secureTextEntry={!showPassword} // ← Toggle here
+                                secureTextEntry={!showPassword}
                                 autoCapitalize="none"
                                 autoCorrect={false}
                                 editable={!loading}
@@ -132,7 +131,7 @@ const LoginScreen = () => {
                             <TouchableOpacity
                                 onPress={() => setShowPassword(!showPassword)}
                                 style={styles.eyeIcon}
-                                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} // Bigger touch area
+                                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                             >
                                 <MaterialCommunityIcons
                                     name={showPassword ? 'eye-off' : 'eye'}
@@ -239,7 +238,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 16,
         top: '50%',
-        transform: [{ translateY: -12 }], 
+        transform: [{ translateY: -12 }],
     },
     inputError: {
         borderColor: '#ff4444',

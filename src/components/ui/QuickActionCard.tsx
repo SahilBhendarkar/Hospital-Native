@@ -69,16 +69,16 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: 120, // Fixed height for consistency
+        height: 120,
         borderRadius: 16,
-        marginHorizontal: 4, // Small gap between cards
+        marginHorizontal: 4,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.15,
         shadowRadius: 8,
         elevation: 5,
-        overflow: 'hidden', // Ensure gradient stays within bounds
-        backgroundColor: '#fff', // fallback
+        overflow: 'hidden', 
+        backgroundColor: '#fff', 
     },
     gradient: {
         flex: 1,
