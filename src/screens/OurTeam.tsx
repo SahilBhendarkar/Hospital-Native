@@ -19,25 +19,25 @@ const teamMembers = [
         id: '1',
         name: 'Dr. Rajiv Pandya',
         specialty: 'Orthopedic Surgeon',
-        image: require('../../assets/team/Ankur.png'),
+        image: require('../../assets/team/ankur.png'),
     },
     {
         id: '2',
         name: 'Dr. Ankur Chaudhari',
         specialty: 'Cardiologist',
-        image: require('../../assets/team/Hiren.png'),
+        image: require('../../assets/team/hiren.png'),
     },
     {
         id: '3',
         name: 'Dr. Nainesh Patel',
         specialty: 'Neurologist',
-        image: require('../../assets/team/Nainesh.png'),
+        image: require('../../assets/team/nainesh.png'),
     },
     {
         id: '4',
         name: 'Dr. Priya Singh',
         specialty: 'General Physician',
-        image: require('../../assets/team/Rajiv.png'),
+        image: require('../../assets/team/rajiv.png'),
     },
 ];
 

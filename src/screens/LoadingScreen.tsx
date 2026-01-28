@@ -58,7 +58,7 @@ const LoadingScreen = () => {
                 ]}
             >
                 <Image
-                    source={require('../../assets/hospital.png')}
+                    source={require('../../assets/images/hospital.png')}
                     style={styles.logo}
                     resizeMode="contain"
                 />

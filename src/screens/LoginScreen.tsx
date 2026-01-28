@@ -71,7 +71,6 @@ const LoginScreen = () => {
         }
     };
 
-
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -83,7 +82,7 @@ const LoginScreen = () => {
             >
                 <View style={styles.logoContainer}>
                     <Image
-                        source={require('../../assets/hospital.png')}
+                        source={require('../../assets/images/hospital.png')}
                         style={styles.logo}
                         resizeMode="contain"
                     />

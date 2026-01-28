@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     Linking,
 } from "react-native";
-const surgeryImage = require("../../assets/images/surgery.png");
+const surgeryImage = require("../../assets/images/about.png");
 
 
 const { width } = Dimensions.get("window");

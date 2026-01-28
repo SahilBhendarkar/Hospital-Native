@@ -15,7 +15,7 @@ const services = [
     {
         id: "1",
         name: "Oncosurgery",
-        image: "Oncosurgery.png",
+        image: "Oncoabout.png",
     },
     {
         id: "2",
@@ -25,7 +25,7 @@ const services = [
     {
         id: "3",
         name: "Plastic & Reconstructive Surgery",
-        image: "Plastic-Reconstructive-surgery.png",
+        image: "Plastic-Reconstructive-about.png",
     },
     {
         id: "4",

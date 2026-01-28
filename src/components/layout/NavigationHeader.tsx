@@ -44,7 +44,7 @@ const NavigationHeader = () => {
                     ) : (
                         <View style={styles.logo}>
                             <Image
-                                source={require('../../../assets/hospital.png')}
+                                source={require('../../../assets/images/hospital.png')}
                                 style={styles.logoImage}
                                 resizeMode="contain"
                             />

@@ -48,27 +48,27 @@ export const healthStats = [
 export const upcomingAppointments = [
     {
         id: '1',
-        doctorName: 'Dr. Sarah Smith',
+        doctorName: 'Dr. Ankur Shah',
         specialty: 'Cardiologist',
         date: 'Oct 24, 2025',
         time: '10:00 AM',
-        image: require('../../assets/team/Ankur.png'),
+        image: require('../../assets/team/ankur.png'),
     },
     {
         id: '2',
-        doctorName: 'Dr. James Wilson',
+        doctorName: 'Dr. Hiren Patel',
         specialty: 'Neurologist',
         date: 'Oct 28, 2025',
         time: '02:30 PM',
-        image: require('../../assets/team/Hiren.png'),
+        image: require('../../assets/team/hiren.png'),
     },
     {
         id: '3',
-        doctorName: 'Dr. Emily Chen',
+        doctorName: 'Dr. Nainesh Chen',
         specialty: 'Dermatologist',
         date: 'Nov 05, 2025',
         time: '11:15 AM',
-        image: require('../../assets/team/Nainesh.png'),
+        image: require('../../assets/team/nainesh.png'),
     },
 ];
 

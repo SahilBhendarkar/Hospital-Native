@@ -48,7 +48,7 @@ const UpcomingAppointmentCard: React.FC<UpcomingAppointmentCardProps> = ({
             <View style={styles.header}>
                 <View style={styles.doctorInfo}>
                     <Image
-                        source={image || require('../../../assets/team/Ankur.png')}
+                        source={image || require('../../../assets/team/ankur.png')}
                         style={styles.avatar}
                     />
                     <View style={styles.textContainer}>
