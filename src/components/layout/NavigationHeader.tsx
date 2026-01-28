@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "../../context/AuthContext";
-import { Image } from "react-native"; 
+import { Image } from "react-native";
 
 const NavigationHeader = () => {
     const navigation = useNavigation<any>();
@@ -55,7 +55,7 @@ const NavigationHeader = () => {
                 <Text style={styles.title}>{route.name}</Text>
 
                 <View style={styles.rightActions}>
-                    {user && (
+                    {user && route.name !== 'Profile' && (
                         <TouchableOpacity onPress={handleLogout} style={styles.actionButton}>
                             <Feather name="log-out" size={20} color="#ef4444" />
                         </TouchableOpacity>

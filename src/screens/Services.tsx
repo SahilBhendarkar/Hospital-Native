@@ -1,13 +1,13 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import {
     View,
     Text,
-    Animated,
     Dimensions,
     StyleSheet,
     ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
 
@@ -104,30 +104,28 @@ const CARD_WIDTH = 150;
 const TOTAL_WIDTH = CARD_WIDTH * services.length * 2;
 
 const Services = () => {
-    const titleOpacity = useRef(new Animated.Value(0)).current;
-    const marqueeTranslate = useRef(new Animated.Value(0)).current;
+    const translateX = useSharedValue(0);
 
-    useEffect(() => {
-        Animated.timing(titleOpacity, {
-            toValue: 1,
-            duration: 800,
-            useNativeDriver: true,
-        }).start();
-
-        Animated.loop(
-            Animated.timing(marqueeTranslate, {
-                toValue: -TOTAL_WIDTH / 2,
+    React.useEffect(() => {
+        translateX.value = withRepeat(
+            withTiming(-TOTAL_WIDTH / 2, {
                 duration: 20000,
-                useNativeDriver: true,
-            })
-        ).start();
+                easing: Easing.linear,
+            }),
+            -1,
+            false
+        );
     }, []);
+
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ translateX: translateX.value }],
+    }));
 
     return (
         <SafeAreaView style={styles.safe}>
             <ScrollView>
                 <View style={styles.section}>
-                    <Animated.Text style={[styles.title, { opacity: titleOpacity }]}>
+                    <Animated.Text entering={FadeInDown.duration(800)} style={styles.title}>
                         Our <Text style={styles.titleAccent}>Specialized</Text> Services
                     </Animated.Text>
 
@@ -135,7 +133,7 @@ const Services = () => {
                         <Animated.View
                             style={[
                                 styles.marquee,
-                                { transform: [{ translateX: marqueeTranslate }] },
+                                animatedStyle,
                             ]}
                         >
                             {[...services, ...services].map((service, index) => (

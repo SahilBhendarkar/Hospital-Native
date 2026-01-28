@@ -17,6 +17,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../context/AuthContext';
 import { loginUser } from '../api/auth';
 
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+
 const LoginScreen = () => {
     const navigation = useNavigation();
     const { login } = useAuth();
@@ -80,7 +82,10 @@ const LoginScreen = () => {
                 contentContainerStyle={styles.scrollContent}
                 keyboardShouldPersistTaps="handled"
             >
-                <View style={styles.logoContainer}>
+                <Animated.View
+                    entering={FadeInUp.duration(800).springify()}
+                    style={styles.logoContainer}
+                >
                     <Image
                         source={require('../../assets/images/hospital.png')}
                         style={styles.logo}
@@ -88,9 +93,12 @@ const LoginScreen = () => {
                     />
                     <Text style={styles.title}>Hospital Management</Text>
                     <Text style={styles.subtitle}>Sign in to continue</Text>
-                </View>
+                </Animated.View>
 
-                <View style={styles.formContainer}>
+                <Animated.View
+                    entering={FadeInDown.delay(400).duration(800).springify()}
+                    style={styles.formContainer}
+                >
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Email</Text>
                         <TextInput
@@ -161,7 +169,7 @@ const LoginScreen = () => {
                             <Text style={styles.signupLink}>Create Account</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </Animated.View>
             </ScrollView>
         </KeyboardAvoidingView>
     );

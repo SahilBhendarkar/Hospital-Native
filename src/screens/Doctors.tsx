@@ -11,6 +11,8 @@ import {
 import { doctors } from "../data/doctors";
 import { useNavigation } from "@react-navigation/native";
 
+import Animated, { FadeInDown } from "react-native-reanimated";
+
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = width / 2 - 24;
 
@@ -19,25 +21,28 @@ const Doctors = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>Our Doctors</Text>
-
             <FlatList
                 data={doctors}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 columnWrapperStyle={styles.row}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={styles.card}
-                        onPress={() => navigation.navigate("DoctorDetails", { doctor: item })}
+                renderItem={({ item, index }) => (
+                    <Animated.View
+                        entering={FadeInDown.delay(index * 100).duration(600).springify()}
+                        style={{ width: CARD_WIDTH }}
                     >
-                        <Image source={item.image} style={styles.image} />
-                        <View style={styles.cardContent}>
-                            <Text style={styles.name}>{item.name}</Text>
-                            <Text style={styles.specialization}>{item.specialization}</Text>
-                            <Text style={styles.experience}>{item.experience}</Text>
-                        </View>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.card}
+                            onPress={() => navigation.navigate("DoctorDetails", { doctor: item })}
+                        >
+                            <Image source={item.image} style={styles.image} />
+                            <View style={styles.cardContent}>
+                                <Text style={styles.name}>{item.name}</Text>
+                                <Text style={styles.specialization}>{item.specialization}</Text>
+                                <Text style={styles.experience}>{item.experience}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </Animated.View>
                 )}
             />
         </View>
@@ -51,7 +56,7 @@ const styles = StyleSheet.create({
     heading: { fontSize: 26, fontWeight: "700", textAlign: "center", marginBottom: 16 },
     row: { justifyContent: "space-between", marginBottom: 12 },
     card: {
-        width: CARD_WIDTH,
+        width: "100%",
         backgroundColor: "white",
         borderRadius: 16,
         overflow: "hidden",

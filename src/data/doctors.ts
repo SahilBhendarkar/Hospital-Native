@@ -19,7 +19,7 @@ export const doctors: Doctor[] = [
         experience: "15+ Years",
         image: require("../../assets/team/ankur.png"),
         profileUrl: "/doctors/anil-sharma",
-        departments: ["Orthopedics & Trauma", "Joint Replacement"],
+        departments: ["Orthopedics & Trauma", "Joint Replacement", "Laparoscopic Surgery"],
         bio: "Dr. Anil Sharma is a renowned Orthopaedic Surgeon with over 15 years of experience in complex joint replacements and trauma surgeries.",
     },
     {
@@ -30,7 +30,7 @@ export const doctors: Doctor[] = [
         experience: "12+ Years",
         image: require("../../assets/team/hiren.png"),
         profileUrl: "/doctors/priya-mehta",
-        departments: ["Cardiology"],
+        departments: ["Cardiology", "Critical Care Medicine (ICU)"],
         bio: "Dr. Priya Mehta specializes in interventional cardiology and has a keen interest in preventive heart care.",
     },
     {
@@ -41,7 +41,7 @@ export const doctors: Doctor[] = [
         experience: "18+ Years",
         image: require("../../assets/team/nainesh.png"),
         profileUrl: "/doctors/rajiv-pandya",
-        departments: ["General Medicine"],
+        departments: ["Pathology", "Advanced Dialysis Unit", "Palliative Pain Management"],
         bio: "Dr. Rajiv Pandya is a dedicated General Physician focusing on holistic patient care and chronic disease management.",
     },
     {
@@ -52,7 +52,7 @@ export const doctors: Doctor[] = [
         experience: "13+ Years",
         image: require("../../assets/team/rajiv.png"),
         profileUrl: "/doctors/nainesh-patel",
-        departments: ["Joint Replacement", "Orthopedics & Trauma"],
+        departments: ["Joint Replacement", "Orthopedics & Trauma", "ENT Surgery"],
         bio: "Dr. Nainesh Patel is an expert in minimally invasive joint replacement surgeries and sports injuries.",
     },
     {
@@ -63,7 +63,7 @@ export const doctors: Doctor[] = [
         experience: "10+ Years",
         image: require("../../assets/team/ankur.png"),
         profileUrl: "/doctors/ankur-chaudhari",
-        departments: ["Cardiology"],
+        departments: ["Cardiology", "Radiology & Imaging"],
         bio: "Dr. Ankur K. Chaudhari is a leading Interventional Cardiologist with extensive experience in 2D Echo and complex cardiac procedures.",
     },
     {
@@ -74,7 +74,7 @@ export const doctors: Doctor[] = [
         experience: "11+ Years",
         image: require("../../assets/team/hiren.png"),
         profileUrl: "/doctors/sneha-kulkarni",
-        departments: ["Gynecology & Obstetrics"],
+        departments: ["Oncosurgery", "Ophthalmology"],
         bio: "Dr. Sneha Kulkarni provides comprehensive care in women's health, specializing in high-risk pregnancies and laparoscopic surgeries.",
     },
     {
@@ -85,7 +85,7 @@ export const doctors: Doctor[] = [
         experience: "9+ Years",
         image: require("../../assets/team/nainesh.png"),
         profileUrl: "/doctors/rohan-deshpande",
-        departments: ["Neurology & Neurosurgery"],
+        departments: ["Neurology & Neurosurgery", "Critical Care Medicine (ICU)"],
         bio: "Dr. Rohan Deshpande treats a wide range of neurological disorders with a patient-centric approach.",
     },
     {
@@ -96,7 +96,7 @@ export const doctors: Doctor[] = [
         experience: "8+ Years",
         image: require("../../assets/team/rajiv.png"),
         profileUrl: "/doctors/kavita-joshi",
-        departments: ["Dermatology"],
+        departments: ["Gastroenterology", "Nephrology", "Endoscopy"],
         bio: "Dr. Kavita Joshi is an experienced Dermatologist offering treatments for various skin, hair, and nail conditions.",
     },
 ];

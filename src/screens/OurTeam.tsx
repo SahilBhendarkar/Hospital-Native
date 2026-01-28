@@ -4,7 +4,6 @@ import {
     View,
     Text,
     ScrollView,
-    Animated,
     Dimensions,
     StyleSheet,
     FlatList,
@@ -49,35 +48,11 @@ const TeamCard = ({ member }: { member: typeof teamMembers[0] }) => (
     </View>
 );
 
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+
 const OurTeam = () => {
-    const titleOpacity = useRef(new Animated.Value(0)).current;
-    const cardsOpacity = useRef(new Animated.Value(0)).current;
-    const buttonOpacity = useRef(new Animated.Value(0)).current;
-
-    React.useEffect(() => {
-        Animated.timing(titleOpacity, {
-            toValue: 1,
-            duration: 800,
-            useNativeDriver: true,
-        }).start();
-
-        Animated.timing(cardsOpacity, {
-            toValue: 1,
-            duration: 700,
-            delay: 200,
-            useNativeDriver: true,
-        }).start();
-
-        Animated.timing(buttonOpacity, {
-            toValue: 1,
-            duration: 600,
-            delay: 400,
-            useNativeDriver: true,
-        }).start();
-    }, []);
-
-    const renderTeamMember = ({ item }: { item: typeof teamMembers[0] }) => (
-        <Animated.View style={{ opacity: cardsOpacity }}>
+    const renderTeamMember = ({ item, index }: { item: typeof teamMembers[0], index: number }) => (
+        <Animated.View entering={FadeInDown.delay(index * 150).duration(600).springify()}>
             <TeamCard member={item} />
         </Animated.View>
     );
@@ -85,19 +60,12 @@ const OurTeam = () => {
     return (
         <View style={styles.container}>
             <View style={styles.headerSection}>
-                <Animated.View style={{ opacity: titleOpacity }}>
+                <Animated.View entering={FadeInUp.duration(800)}>
                     <Text style={styles.title}>OUR TEAMS</Text>
                 </Animated.View>
             </View>
 
-            <Animated.View
-                style={[
-                    styles.cardsContainer,
-                    {
-                        opacity: cardsOpacity,
-                    },
-                ]}
-            >
+            <View style={styles.cardsContainer}>
                 <FlatList
                     data={teamMembers}
                     renderItem={renderTeamMember}
@@ -106,9 +74,9 @@ const OurTeam = () => {
                     columnWrapperStyle={styles.columnWrapper}
                     scrollEnabled={false}
                 />
-            </Animated.View>
+            </View>
 
-            <Animated.View style={{ opacity: buttonOpacity }}>
+            <Animated.View entering={FadeInDown.delay(1000).duration(600)}>
                 <TouchableOpacity style={styles.viewAllButton}>
                     <Text style={styles.viewAllButtonText}>View All</Text>
                 </TouchableOpacity>

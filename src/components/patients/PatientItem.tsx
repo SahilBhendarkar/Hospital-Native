@@ -4,11 +4,20 @@ import type { Patient } from "../../api/types";
 interface Props {
     patient: Patient;
     onPress: () => void;
+    onLongPress: () => void;
 }
 
-const PatientItem = ({ patient, onPress }: Props) => {
+const PatientItem = ({ patient, onPress, onLongPress }: Props) => {
     return (
-        <Pressable onPress={onPress} style={styles.card}>
+        <Pressable
+            onPress={onPress}
+            onLongPress={onLongPress}
+            delayLongPress={500}
+            style={({ pressed }) => [
+                styles.card,
+                pressed && styles.pressed
+            ]}
+        >
             <Text style={styles.name}>{patient.name}</Text>
             <Text style={styles.meta}>
                 {patient.age} yrs • {patient.condition}
@@ -33,6 +42,10 @@ const styles = StyleSheet.create({
     meta: {
         marginTop: 4,
         color: "#555",
+    },
+    pressed: {
+        backgroundColor: "#f0f0f0",
+        transform: [{ scale: 0.98 }],
     },
 });
 

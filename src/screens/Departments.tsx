@@ -10,35 +10,41 @@ import {
 import { departments } from "../data/departments";
 import { useNavigation } from "@react-navigation/native";
 
+import Animated, { FadeInDown } from "react-native-reanimated";
+
 const Departments = () => {
     const navigation = useNavigation<any>();
 
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>Departments</Text>
 
             <FlatList
                 data={departments}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 columnWrapperStyle={styles.row}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={styles.card}
-                        onPress={() =>
-                            navigation.navigate("DepartmentDetails", {
-                                department: item,
-                            })
-                        }
+                renderItem={({ item, index }) => (
+                    <Animated.View
+                        entering={FadeInDown.delay(index * 100).duration(600).springify()}
+                        style={{ width: "48%" }}
                     >
-                        <Image source={item.image} style={styles.image} />
-                        <View style={styles.cardContent}>
-                            <Text style={styles.title}>{item.title}</Text>
-                            <Text numberOfLines={3} style={styles.description}>
-                                {item.description}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.card}
+                            onPress={() =>
+                                navigation.navigate("DepartmentDetails", {
+                                    department: item,
+                                })
+                            }
+                        >
+                            <Image source={item.image} style={styles.image} />
+                            <View style={styles.cardContent}>
+                                <Text style={styles.title}>{item.title}</Text>
+                                <Text numberOfLines={3} style={styles.description}>
+                                    {item.description}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </Animated.View>
                 )}
             />
         </View>
@@ -52,7 +58,7 @@ const styles = StyleSheet.create({
     heading: { fontSize: 26, fontWeight: "700", textAlign: "center", marginBottom: 16 },
     row: { justifyContent: "space-between", marginBottom: 12 },
     card: {
-        width: "48%",
+        width: "100%",
         backgroundColor: "white",
         borderRadius: 16,
         overflow: "hidden",

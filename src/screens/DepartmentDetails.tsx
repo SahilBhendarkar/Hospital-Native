@@ -13,6 +13,8 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { doctors } from "../data/doctors";
 import { departments } from "../data/departments";
 
+import Animated, { FadeInDown, FadeIn, FadeInRight } from "react-native-reanimated";
+
 const { width } = Dimensions.get("window");
 
 const DepartmentDetails = () => {
@@ -45,33 +47,39 @@ const DepartmentDetails = () => {
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             {/* Header */}
-            <ImageBackground source={departmentData.image} style={styles.heroHeader}>
-                <View style={styles.overlay}>
-                    <Text style={styles.heroTitle}>{departmentData.title}</Text>
-                    <Text style={styles.heroSubtitle}>
-                        {departmentData.description}
-                    </Text>
-                </View>
-            </ImageBackground>
+            <Animated.View entering={FadeIn.duration(800)}>
+                <ImageBackground source={departmentData.image} style={styles.heroHeader}>
+                    <View style={styles.overlay}>
+                        <Animated.Text entering={FadeInDown.delay(200).duration(600)} style={styles.heroTitle}>{departmentData.title}</Animated.Text>
+                        <Animated.Text entering={FadeInDown.delay(400).duration(600)} style={styles.heroSubtitle}>
+                            {departmentData.description}
+                        </Animated.Text>
+                    </View>
+                </ImageBackground>
+            </Animated.View>
 
             <View style={styles.content}>
                 {/* About Section */}
-                <View style={styles.section}>
+                <Animated.View entering={FadeInDown.delay(600).duration(600)} style={styles.section}>
                     <Text style={styles.sectionHeader}>About {departmentData.title}</Text>
                     <Text style={styles.descriptionText}>
-                        {departmentData.description} {departmentData.description} A condition where the blood vessels that supply oxygen and nutrients to the heart muscle become narrowed or blocked.
+                        {departmentData.description} Our department is dedicated to providing comprehensive care using the latest medical technologies and expert specialists.
                     </Text>
-                </View>
+                </Animated.View>
 
                 {/* Services Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionHeader}>Services Offered</Text>
+                    <Animated.Text entering={FadeInDown.delay(700)} style={styles.sectionHeader}>Services Offered</Animated.Text>
                     <View style={styles.servicesGrid}>
                         {services.map((service, index) => (
-                            <View key={index} style={styles.serviceItem}>
+                            <Animated.View
+                                key={index}
+                                entering={FadeInRight.delay(800 + index * 100).duration(400)}
+                                style={styles.serviceItem}
+                            >
                                 <Text style={styles.serviceBullet}>•</Text>
                                 <Text style={styles.serviceText}>{service}</Text>
-                            </View>
+                            </Animated.View>
                         ))}
                     </View>
                 </View>
@@ -79,10 +87,14 @@ const DepartmentDetails = () => {
                 {/* Specialists Section */}
                 {departmentDoctors.length > 0 && (
                     <View style={styles.section}>
-                        <Text style={[styles.sectionHeader, { textAlign: 'center' }]}>Our Specialists</Text>
+                        <Animated.Text entering={FadeInDown.delay(1200)} style={[styles.sectionHeader, { textAlign: 'center' }]}>Our Specialists</Animated.Text>
                         <View style={styles.specialistsGrid}>
-                            {departmentDoctors.map((doc) => (
-                                <View key={doc.id} style={styles.doctorCard}>
+                            {departmentDoctors.map((doc, index) => (
+                                <Animated.View
+                                    key={doc.id}
+                                    entering={FadeInDown.delay(1300 + index * 100).springify()}
+                                    style={styles.doctorCard}
+                                >
                                     <Image
                                         source={
                                             typeof doc.image === "string"
@@ -97,14 +109,14 @@ const DepartmentDetails = () => {
                                     <TouchableOpacity onPress={() => console.log("View Profile", doc.name)}>
                                         <Text style={styles.viewProfile}>View Profile →</Text>
                                     </TouchableOpacity>
-                                </View>
+                                </Animated.View>
                             ))}
                         </View>
                     </View>
                 )}
 
                 {/* CTA Section */}
-                <View style={styles.ctaSection}>
+                <Animated.View entering={FadeIn.delay(1500).duration(800)} style={styles.ctaSection}>
                     <Text style={styles.ctaTitle}>
                         Take the First Step Towards Better Health
                     </Text>
@@ -114,7 +126,7 @@ const DepartmentDetails = () => {
                     >
                         <Text style={styles.ctaButtonText}>Schedule an Appointment</Text>
                     </TouchableOpacity>
-                </View>
+                </Animated.View>
             </View>
         </ScrollView>
     );

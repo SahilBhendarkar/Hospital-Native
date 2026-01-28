@@ -8,6 +8,7 @@ import Departments from '../screens/Departments';
 import Doctors from '../screens/Doctors';
 import DoctorDetails from '../screens/DoctorDetails';
 import PatientList from '../screens/PatientList';
+import Profile from '../screens/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,7 @@ const MainNavigator = () => {
             <Stack.Screen name="DoctorDetails" component={DoctorDetails} />
             <Stack.Screen name="Patients" component={PatientList} />
             <Stack.Screen name="Appointment" component={AppointmentAndEvents} />
+            <Stack.Screen name="Profile" component={Profile} />
 
         </Stack.Navigator>
     );

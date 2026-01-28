@@ -1,44 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   ScrollView,
   TextInput,
   TouchableOpacity,
-  Image,
-  Animated,
   Dimensions,
   StyleSheet,
-  FlatList,
 } from 'react-native';
+import Animated, { FadeInDown, FadeInUp, FadeInLeft } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
-
-const events = [
-  {
-    id: '1',
-    date: '17-03-2026',
-    title: 'Umbergaon Taluka Medico Club',
-    description: 'Medical professionals gathering for knowledge exchange & networking',
-    image: require('../../assets/images/event1.jpg'),
-  },
-  {
-    id: '2',
-    date: '10-03-2026',
-    title: "Ankleshwar DOCTOR'S Club Cricket Tournament",
-    description: 'Annual cricket tournament for doctors',
-    image: require('../../assets/images/event2.jpg'),
-  },
-  {
-    id: '3',
-    date: '09-03-2026',
-    title: 'Senior Citizen Camp',
-    description: 'Free health checkup camp for senior citizens',
-    image: require('../../assets/images/event3.jpg'),
-  },
-];
-
-
 
 const AppointmentAndEvents = () => {
   const [formData, setFormData] = useState({
@@ -49,24 +21,6 @@ const AppointmentAndEvents = () => {
     doctor: '',
     message: '',
   });
-
-  const formOpacity = useRef(new Animated.Value(0)).current;
-  const eventsOpacity = useRef(new Animated.Value(0)).current;
-
-  React.useEffect(() => {
-    Animated.timing(formOpacity, {
-      toValue: 1,
-      duration: 800,
-      useNativeDriver: true,
-    }).start();
-
-    Animated.timing(eventsOpacity, {
-      toValue: 1,
-      duration: 700,
-      delay: 200,
-      useNativeDriver: true,
-    }).start();
-  }, []);
 
   const handleSubmit = () => {
     if (!formData.name || !formData.phone || !formData.email) {
@@ -88,88 +42,94 @@ const AppointmentAndEvents = () => {
     <View style={{ flex: 1 }}>
       <ScrollView style={styles.container}>
         <View style={styles.content}>
-          {/* Appointment Form */}
           <Animated.View
-            style={[
-              styles.formSection,
-              {
-                opacity: formOpacity,
-              },
-            ]}
+            entering={FadeInUp.duration(800).springify()}
+            style={styles.formSection}
           >
-            <Text style={styles.formTitle}>Appointment Form</Text>
-            <Text style={styles.formSubtitle}>
+            <Animated.Text entering={FadeInLeft.delay(200)} style={styles.formTitle}>Appointment Form</Animated.Text>
+            <Animated.Text entering={FadeInLeft.delay(300)} style={styles.formSubtitle}>
               Book your appointment - response within 30 minutes
-            </Text>
+            </Animated.Text>
 
             <View style={styles.form}>
-              <TextInput
-                style={styles.input}
-                placeholder="Full Name*"
-                placeholderTextColor="#999"
-                value={formData.name}
-                onChangeText={(text) =>
-                  setFormData({ ...formData, name: text })
-                }
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Phone Number*"
-                placeholderTextColor="#999"
-                keyboardType="phone-pad"
-                value={formData.phone}
-                onChangeText={(text) =>
-                  setFormData({ ...formData, phone: text })
-                }
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Email Address*"
-                placeholderTextColor="#999"
-                keyboardType="email-address"
-                value={formData.email}
-                onChangeText={(text) =>
-                  setFormData({ ...formData, email: text })
-                }
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Appointment Date"
-                placeholderTextColor="#999"
-                value={formData.date}
-                onChangeText={(text) =>
-                  setFormData({ ...formData, date: text })
-                }
-              />
+              <Animated.View entering={FadeInDown.delay(400)}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Full Name*"
+                  placeholderTextColor="#999"
+                  value={formData.name}
+                  onChangeText={(text) =>
+                    setFormData({ ...formData, name: text })
+                  }
+                />
+              </Animated.View>
+              <Animated.View entering={FadeInDown.delay(500)}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Phone Number*"
+                  placeholderTextColor="#999"
+                  keyboardType="phone-pad"
+                  value={formData.phone}
+                  onChangeText={(text) =>
+                    setFormData({ ...formData, phone: text })
+                  }
+                />
+              </Animated.View>
+              <Animated.View entering={FadeInDown.delay(600)}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email Address*"
+                  placeholderTextColor="#999"
+                  keyboardType="email-address"
+                  value={formData.email}
+                  onChangeText={(text) =>
+                    setFormData({ ...formData, email: text })
+                  }
+                />
+              </Animated.View>
+              <Animated.View entering={FadeInDown.delay(700)}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Appointment Date"
+                  placeholderTextColor="#999"
+                  value={formData.date}
+                  onChangeText={(text) =>
+                    setFormData({ ...formData, date: text })
+                  }
+                />
+              </Animated.View>
 
-              <View style={styles.selectContainer}>
+              <Animated.View entering={FadeInDown.delay(800)} style={styles.selectContainer}>
                 <Text style={styles.selectLabel}>Select Doctor</Text>
                 <Text style={styles.selectOptions}>
                   Dr. Rajiv Pandya | Dr. Ankur Chaudhari | Dr. Nainesh Patel
                 </Text>
-              </View>
+              </Animated.View>
 
-              <TextInput
-                style={[styles.input, styles.textarea]}
-                placeholder="Message*"
-                placeholderTextColor="#999"
-                multiline
-                numberOfLines={4}
-                value={formData.message}
-                onChangeText={(text) =>
-                  setFormData({ ...formData, message: text })
-                }
-              />
+              <Animated.View entering={FadeInDown.delay(900)}>
+                <TextInput
+                  style={[styles.input, styles.textarea]}
+                  placeholder="Message*"
+                  placeholderTextColor="#999"
+                  multiline
+                  numberOfLines={4}
+                  value={formData.message}
+                  onChangeText={(text) =>
+                    setFormData({ ...formData, message: text })
+                  }
+                />
+              </Animated.View>
 
-              <TouchableOpacity
-                style={styles.submitButton}
-                onPress={handleSubmit}
-              >
-                <Text style={styles.submitButtonText}>📅 Schedule Appointment</Text>
-              </TouchableOpacity>
+              <Animated.View entering={FadeInUp.delay(1000)}>
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={handleSubmit}
+                >
+                  <Text style={styles.submitButtonText}>📅 Schedule Appointment</Text>
+                </TouchableOpacity>
+              </Animated.View>
             </View>
           </Animated.View>
-
         </View>
       </ScrollView>
     </View>
@@ -254,7 +214,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
   },
- 
+
   upcomingTag: {
     backgroundColor: '#d1fae5',
     paddingVertical: 6,

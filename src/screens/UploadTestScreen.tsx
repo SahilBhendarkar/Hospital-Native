@@ -67,6 +67,7 @@ const UploadTestScreen = () => {
             console.log("Uploading image:", photoUri);
             setUploading(false);
             Alert.alert("Success", "Image uploaded successfully");
+            setPhotoUri(null);
         }, 1500);
     };
 

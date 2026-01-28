@@ -11,6 +11,8 @@ import {
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { doctors } from "../data/doctors";
 
+import Animated, { FadeInDown, FadeInUp, FadeIn } from "react-native-reanimated";
+
 const { width } = Dimensions.get("window");
 
 const DoctorDetails = () => {
@@ -31,8 +33,14 @@ const DoctorDetails = () => {
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             {/* Hero Section */}
-            <View style={styles.heroSection}>
-                <View style={styles.imageWrapper}>
+            <Animated.View
+                entering={FadeInUp.duration(600)}
+                style={styles.heroSection}
+            >
+                <Animated.View
+                    entering={FadeInDown.delay(200).duration(600).springify()}
+                    style={styles.imageWrapper}
+                >
                     <Image
                         source={
                             typeof doctorData.image === "string"
@@ -41,23 +49,29 @@ const DoctorDetails = () => {
                         }
                         style={styles.doctorImage}
                     />
-                </View>
-                <Text style={styles.name}>{doctorData.name}</Text>
-                <Text style={styles.specialization}>{doctorData.specialization}</Text>
-                <Text style={styles.qualification}>{doctorData.qualification}</Text>
-            </View>
+                </Animated.View>
+                <Animated.Text entering={FadeInDown.delay(300)} style={styles.name}>{doctorData.name}</Animated.Text>
+                <Animated.Text entering={FadeInDown.delay(400)} style={styles.specialization}>{doctorData.specialization}</Animated.Text>
+                <Animated.Text entering={FadeInDown.delay(500)} style={styles.qualification}>{doctorData.qualification}</Animated.Text>
+            </Animated.View>
 
             <View style={styles.content}>
                 {/* About Section */}
-                <View style={styles.section}>
+                <Animated.View
+                    entering={FadeInDown.delay(600).duration(600)}
+                    style={styles.section}
+                >
                     <Text style={styles.sectionHeader}>About Doctor</Text>
                     <Text style={styles.descriptionText}>
-                        {doctorData.bio} {doctorData.bio} Dedicated to providing the best medical care with a focus on patient safety and comfort.
+                        {doctorData.bio} Dedicated to providing the best medical care with a focus on patient safety and comfort.
                     </Text>
-                </View>
+                </Animated.View>
 
                 {/* Details Table-ish */}
-                <View style={styles.detailsBox}>
+                <Animated.View
+                    entering={FadeInDown.delay(700).duration(600)}
+                    style={styles.detailsBox}
+                >
                     <View style={styles.detailRow}>
                         <Text style={styles.detailLabel}>Experience</Text>
                         <Text style={styles.detailValue}>{doctorData.experience}</Text>
@@ -67,10 +81,13 @@ const DoctorDetails = () => {
                         <Text style={styles.detailLabel}>Departments</Text>
                         <Text style={styles.detailValue}>{doctorData.departments.join(", ")}</Text>
                     </View>
-                </View>
+                </Animated.View>
 
                 {/* CTA Section */}
-                <View style={styles.ctaSection}>
+                <Animated.View
+                    entering={FadeIn.delay(800).duration(800)}
+                    style={styles.ctaSection}
+                >
                     <Text style={styles.ctaTitle}>
                         Need a Consultation?
                     </Text>
@@ -80,7 +97,7 @@ const DoctorDetails = () => {
                     >
                         <Text style={styles.ctaButtonText}>Book Appointment</Text>
                     </TouchableOpacity>
-                </View>
+                </Animated.View>
             </View>
         </ScrollView>
     );
@@ -93,7 +110,7 @@ const styles = StyleSheet.create({
     heroSection: {
         alignItems: "center",
         paddingVertical: 32,
-        backgroundColor: "#f0f9ff", // Light blue bg
+        backgroundColor: "#f0f9ff", 
         borderBottomLeftRadius: 32,
         borderBottomRightRadius: 32,
         marginBottom: 20,

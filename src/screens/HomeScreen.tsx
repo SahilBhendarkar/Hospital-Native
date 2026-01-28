@@ -21,9 +21,8 @@ import QuickActionCard from '../components/ui/QuickActionCard';
 import StatCard from '../components/ui/StatCard';
 import UpcomingAppointmentCard from '../components/ui/UpcomingAppointmentCard';
 import HealthTipCard from '../components/ui/HealthTipCard';
-
+import * as Notifications from 'expo-notifications';
 import { healthStats, upcomingAppointments, healthTips } from '../data/mockHealthData';
-import TestNotificationButton from '../components/notifications/TestNotificationButton';
 
 type RootStackParamList = {
     Doctors: undefined;
@@ -64,12 +63,25 @@ const HomeScreen = () => {
         });
     };
 
+    const triggerTestNotification = async () => {
+        await Notifications.scheduleNotificationAsync({
+            content: {
+                title: "Hospital Mobile 🔔",
+                body: "This is a Demo Notification",
+            },
+            trigger: null,
+        });
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor="#f9fafb" />
 
             {/* Header Section */}
-            <View style={styles.header}>
+            <Animated.View
+                entering={FadeIn.duration(800)}
+                style={styles.header}
+            >
                 <View style={styles.headerLeft}>
                     <View>
                         <Text style={styles.greeting}>{getGreeting()}</Text>
@@ -78,18 +90,22 @@ const HomeScreen = () => {
                     <Text style={styles.dateText}>{formatDate()}</Text>
                 </View>
                 <View style={styles.headerRight}>
-                    <TouchableOpacity style={styles.iconButton}>
+                    <TouchableOpacity
+                        style={styles.iconButton}
+                        onPress={triggerTestNotification}
+                    >
                         <View style={styles.notificationBadge} />
                         <Feather name="bell" size={24} color="#1f2937" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={logout} style={styles.profileButton}>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('Profile' as any)} style={styles.profileButton}>
                         <Image
                             source={require('../../assets/contact.jpg')}
                             style={styles.avatar}
                         />
                     </TouchableOpacity>
                 </View>
-            </View>
+            </Animated.View>
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -222,17 +238,6 @@ const HomeScreen = () => {
                             />
                         </Animated.View>
                     ))}
-                </View>
-
-                {/*  Test Notification Button  */}
-                <View style={[styles.sectionContainer, styles.lastSection]}>
-                    <Animated.Text
-                        style={styles.sectionTitle}
-                        entering={FadeIn.delay(1200)}
-                    >
-                        Notification Button
-                    </Animated.Text>
-                    <TestNotificationButton />
                 </View>
 
 

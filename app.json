@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Hospital-Mobile",
+    "name": "Hospital",
     "slug": "Hospital-Mobile",
     "version": "1.0.0",
     "scheme": "hospital-mobile",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/hospital.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -19,7 +19,7 @@
     "android": {
       "package": "com.hospital.mobile",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/images/hospital.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
