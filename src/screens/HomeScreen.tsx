@@ -22,7 +22,11 @@ import StatCard from '../components/ui/StatCard';
 import UpcomingAppointmentCard from '../components/ui/UpcomingAppointmentCard';
 import HealthTipCard from '../components/ui/HealthTipCard';
 import * as Notifications from 'expo-notifications';
-import { healthStats, upcomingAppointments, healthTips } from '../data/mockHealthData';
+import { healthStats, healthTips } from '../data/mockHealthData';
+import { getAppointments } from '../api/services/appointment.service';
+import { Appointment } from '../api/mock/data';
+import SkeletonLoader from '../components/ui/SkeletonLoader';
+import * as Haptics from 'expo-haptics';
 
 type RootStackParamList = {
     Doctors: undefined;
@@ -36,12 +40,30 @@ const HomeScreen = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const { user, logout } = useAuth();
     const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [appointments, setAppointments] = useState<Appointment[]>([]);
+    const [searchQuery, setSearchQuery] = useState('');
 
-    const onRefresh = React.useCallback(() => {
+
+    const fetchAppointments = async () => {
+        try {
+            const data = await getAppointments();
+            setAppointments(data);
+        } catch (error) {
+            console.error('Failed to fetch appointments:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    React.useEffect(() => {
+        fetchAppointments();
+    }, []);
+
+    const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
-        setTimeout(() => {
-            setRefreshing(false);
-        }, 2000);
+        await fetchAppointments();
+        setRefreshing(false);
     }, []);
 
     const handleSearch = (text: string) => {
@@ -119,8 +141,13 @@ const HomeScreen = () => {
                     style={styles.searchContainer}
                     entering={FadeInDown.delay(100).springify()}
                 >
-                    <SearchBar onSearch={handleSearch} />
+                    <SearchBar
+                        placeholder="Search doctors, departments..."
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                    />
                 </Animated.View>
+
 
                 {/* Quick Actions */}
                 <View style={styles.sectionContainer}>
@@ -136,7 +163,10 @@ const HomeScreen = () => {
                                 title="Find Doctors"
                                 icon="users"
                                 colors={['#3b82f6', '#2563eb']}
-                                onPress={() => navigation.navigate('Doctors')}
+                                onPress={() => {
+                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                                    navigation.navigate('Doctors');
+                                }}
                             />
                         </Animated.View>
                         <Animated.View style={{ flex: 1 }} entering={FadeInDown.delay(400).springify()}>
@@ -144,7 +174,10 @@ const HomeScreen = () => {
                                 title="Departments"
                                 icon="layers"
                                 colors={['#8b5cf6', '#7c3aed']}
-                                onPress={() => navigation.navigate('Departments')}
+                                onPress={() => {
+                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                                    navigation.navigate('Departments');
+                                }}
                             />
                         </Animated.View>
                         <Animated.View style={{ flex: 1 }} entering={FadeInDown.delay(500).springify()}>
@@ -153,7 +186,10 @@ const HomeScreen = () => {
                                 subtitle="Schedule Now"
                                 icon="calendar"
                                 colors={['#10b981', '#059669']}
-                                onPress={() => navigation.navigate('Appointment')}
+                                onPress={() => {
+                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                                    navigation.navigate('Appointment');
+                                }}
                             />
                         </Animated.View>
                     </View>
@@ -202,22 +238,43 @@ const HomeScreen = () => {
                         showsHorizontalScrollIndicator={false}
                         contentContainerStyle={styles.horizontalScrollContent}
                     >
-                        {upcomingAppointments.map((appt, index) => (
-                            <Animated.View
-                                key={appt.id}
-                                entering={FadeInRight.delay(1100 + index * 100).springify()}
-                            >
-                                <UpcomingAppointmentCard
-                                    doctorName={appt.doctorName}
-                                    specialty={appt.specialty}
-                                    date={appt.date}
-                                    time={appt.time}
-                                    image={appt.image}
-                                    onPress={() => console.log('View appointment', appt.id)}
-                                    onCancel={() => console.log('Cancel appointment', appt.id)}
-                                />
-                            </Animated.View>
-                        ))}
+                        {loading ? (
+                            // Skeleton states
+                            [1, 2].map((_, i) => (
+                                <View key={i} style={{ width: 280, marginRight: 16 }}>
+                                    <SkeletonLoader height={160} width={280} borderRadius={20} />
+                                </View>
+                            ))
+                        ) : appointments.filter(appt =>
+                            appt.doctorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            appt.patientName.toLowerCase().includes(searchQuery.toLowerCase())
+                        ).length > 0 ? (
+                            appointments
+                                .filter(appt =>
+                                    appt.doctorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    appt.patientName.toLowerCase().includes(searchQuery.toLowerCase())
+                                )
+                                .map((appt, index) => (
+                                    <Animated.View
+                                        key={appt.id}
+                                        entering={FadeInRight.delay(1100 + index * 100).springify()}
+                                    >
+                                        <UpcomingAppointmentCard
+                                            doctorName={appt.doctorName}
+                                            specialty="General Physician"
+                                            date={new Date(appt.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                            time={appt.time}
+                                            image={require('../../assets/team/ankur.png')}
+                                            onPress={() => console.log('View appointment', appt.id)}
+                                            onCancel={() => console.log('Cancel appointment', appt.id)}
+                                        />
+                                    </Animated.View>
+                                ))
+                        ) : (
+                            <Text style={{ color: '#666', fontStyle: 'italic', paddingHorizontal: 20 }}>
+                                {searchQuery ? 'No matching appointments found' : 'No upcoming appointments'}
+                            </Text>
+                        )}
                     </ScrollView>
                 </View>
 

@@ -16,12 +16,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../context/AuthContext';
 import { loginUser } from '../api/auth';
-
+import { useToast } from '../context/ToastContext';
+import * as Haptics from 'expo-haptics';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 const LoginScreen = () => {
     const navigation = useNavigation();
     const { login } = useAuth();
+    const { showToast } = useToast();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -59,14 +61,14 @@ const LoginScreen = () => {
         try {
             const response = await loginUser(email, password);
             await login(response.token, response.user);
+            showToast(`Welcome back, ${response.user.name}!`, 'success');
 
         } catch (error) {
-            Alert.alert(
-                'Login Failed',
+            showToast(
                 error instanceof Error
                     ? error.message
                     : 'Invalid credentials. Please try again.',
-                [{ text: 'OK' }]
+                'error'
             );
         } finally {
             setLoading(false);
@@ -152,7 +154,10 @@ const LoginScreen = () => {
 
                     <TouchableOpacity
                         style={[styles.loginButton, loading && styles.loginButtonDisabled]}
-                        onPress={handleLogin}
+                        onPress={() => {
+                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                            handleLogin();
+                        }}
                         disabled={loading}
                         activeOpacity={0.8}
                     >

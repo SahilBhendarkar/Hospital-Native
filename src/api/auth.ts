@@ -1,4 +1,5 @@
 import { User } from './types';
+import { mockUsers } from './mock/data';
 
 interface LoginResponse {
     token: string;
@@ -9,35 +10,12 @@ interface LoginResponse {
 export const loginUser = async (email: string, password: string): Promise<LoginResponse> => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    if (email === 'admin@gmail.com' && password === 'admin123') {
+    const user = mockUsers.find(u => u.email === email.toLowerCase());
+
+    if (user && password === `${user.role}123`) {
         return {
             token: 'mock-jwt-token-' + Date.now(),
-            user: {
-                id: '1',
-                name: 'Sahil',
-                email: email,
-                role: 'admin',
-            },
-        };
-    } else if (email === 'doctor@gmail.com' && password === 'doctor123') {
-        return {
-            token: 'mock-jwt-token-' + Date.now(),
-            user: {
-                id: '2',
-                name: 'Dr. Smith',
-                email: email,
-                role: 'doctor',
-            },
-        };
-    } else if (email === 'patient@gmail.com' && password === 'patient123') {
-        return {
-            token: 'mock-jwt-token-' + Date.now(),
-            user: {
-                id: '3',
-                name: 'John Doe',
-                email: email,
-                role: 'patient',
-            },
+            user: user,
         };
     }
 
