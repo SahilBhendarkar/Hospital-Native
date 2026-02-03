@@ -12,21 +12,23 @@ import { useNavigation } from "@react-navigation/native";
 
 import Animated, { FadeInDown } from "react-native-reanimated";
 
+import { wp, hp, moderateScale } from "../utils/responsive";
+
 const Departments = () => {
     const navigation = useNavigation<any>();
 
     return (
         <View style={styles.container}>
-
             <FlatList
                 data={departments}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 columnWrapperStyle={styles.row}
+                contentContainerStyle={styles.listContent}
                 renderItem={({ item, index }) => (
                     <Animated.View
                         entering={FadeInDown.delay(index * 100).duration(600).springify()}
-                        style={{ width: "48%" }}
+                        style={{ width: wp(44) }}
                     >
                         <TouchableOpacity
                             style={styles.card}
@@ -54,18 +56,23 @@ const Departments = () => {
 export default Departments;
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, backgroundColor: "#f8fafc" },
-    heading: { fontSize: 26, fontWeight: "700", textAlign: "center", marginBottom: 16 },
-    row: { justifyContent: "space-between", marginBottom: 12 },
+    container: { flex: 1, backgroundColor: "#f8fafc" },
+    listContent: { padding: wp(4) },
+    heading: { fontSize: moderateScale(26), fontWeight: "700", textAlign: "center", marginBottom: hp(2) },
+    row: { justifyContent: "space-between", marginBottom: hp(1.5) },
     card: {
         width: "100%",
         backgroundColor: "white",
-        borderRadius: 16,
+        borderRadius: wp(4),
         overflow: "hidden",
         elevation: 4,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
     },
-    image: { width: "100%", height: 120 },
-    cardContent: { padding: 12 },
-    title: { fontSize: 16, fontWeight: "700", marginBottom: 4 },
-    description: { fontSize: 13, color: "#6b7280" },
+    image: { width: "100%", height: hp(14) },
+    cardContent: { padding: wp(3) },
+    title: { fontSize: moderateScale(16), fontWeight: "700", marginBottom: hp(0.5) },
+    description: { fontSize: moderateScale(13), color: "#6b7280" },
 });

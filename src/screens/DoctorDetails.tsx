@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     View,
     Text,
@@ -13,12 +13,55 @@ import { doctors } from "../data/doctors";
 
 import Animated, { FadeInDown, FadeInUp, FadeIn } from "react-native-reanimated";
 
-const { width } = Dimensions.get("window");
+import { wp, hp, moderateScale } from "../utils/responsive";
+
+const generateCurrentWeekDates = () => {
+    const dates = [];
+    const today = new Date();
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    for (let i = 0; i < 7; i++) {
+        const date = new Date();
+        date.setDate(today.getDate() + i);
+        dates.push({
+            id: i,
+            day: dayNames[date.getDay()],
+            date: date.getDate().toString(),
+            fullDate: date.toISOString().split('T')[0],
+        });
+    }
+    return dates;
+};
+
+const DAYS = generateCurrentWeekDates();
+
+const TIMES = [
+    "09:00 AM", "10:00 AM", "11:00 AM",
+    "01:00 PM", "02:00 PM", "03:00 PM",
+    "06:00 PM", "07:00 PM", "08:00 PM"
+];
+
+const isTimePassed = (timeString: string) => {
+    const today = new Date();
+    const [time, period] = timeString.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
+
+    if (period === 'PM' && hours !== 12) hours += 12;
+    if (period === 'AM' && hours === 12) hours = 0;
+
+    const slotTime = new Date();
+    slotTime.setHours(hours, minutes, 0, 0);
+
+    return slotTime < today;
+};
 
 const DoctorDetails = () => {
     const route = useRoute<any>();
     const navigation = useNavigation<any>();
     const { doctor, id } = route.params;
+
+    const [selectedDate, setSelectedDate] = useState(0);
+    const [selectedTime, setSelectedTime] = useState("02:00 PM");
 
     const doctorData = doctor || doctors.find((d) => d.id.toString() === id?.toString());
 
@@ -63,37 +106,68 @@ const DoctorDetails = () => {
                 >
                     <Text style={styles.sectionHeader}>About Doctor</Text>
                     <Text style={styles.descriptionText}>
-                        {doctorData.bio} Dedicated to providing the best medical care with a focus on patient safety and comfort.
+                        {doctorData.bio || "Dedicated to providing the best medical care with a focus on patient safety and comfort."}
                     </Text>
                 </Animated.View>
 
-                {/* Details Table-ish */}
-                <Animated.View
-                    entering={FadeInDown.delay(700).duration(600)}
-                    style={styles.detailsBox}
-                >
-                    <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Experience</Text>
-                        <Text style={styles.detailValue}>{doctorData.experience}</Text>
-                    </View>
-                    <View style={styles.divider} />
-                    <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Departments</Text>
-                        <Text style={styles.detailValue}>{doctorData.departments.join(", ")}</Text>
+                {/* Date Selection */}
+                <Animated.View entering={FadeInDown.delay(700)} style={styles.section}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.dateList}>
+                        {DAYS.map((item) => (
+                            <TouchableOpacity
+                                key={item.id}
+                                style={[
+                                    styles.dateCard,
+                                    selectedDate === item.id && styles.selectedDateCard
+                                ]}
+                                onPress={() => setSelectedDate(item.id)}
+                            >
+                                <Text style={[styles.dayText, selectedDate === item.id && styles.selectedText]}>{item.day}</Text>
+                                <Text style={[styles.dateText, selectedDate === item.id && styles.selectedText]}>{item.date}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </Animated.View>
+
+                {/* Time Selection */}
+                <Animated.View entering={FadeInDown.delay(800)} style={styles.section}>
+                    <View style={styles.timeGrid}>
+                        {TIMES.map((time) => {
+                            const isPast = selectedDate === 0 && isTimePassed(time);
+                            return (
+                                <TouchableOpacity
+                                    key={time}
+                                    disabled={isPast}
+                                    style={[
+                                        styles.timeSlot,
+                                        selectedTime === time && styles.selectedTimeSlot,
+                                        isPast && styles.disabledTimeSlot
+                                    ]}
+                                    onPress={() => setSelectedTime(time)}
+                                >
+                                    <Text style={[
+                                        styles.timeText,
+                                        selectedTime === time && styles.selectedText,
+                                        isPast && styles.disabledTimeText
+                                    ]}>{time}</Text>
+                                </TouchableOpacity>
+                            );
+                        })}
                     </View>
                 </Animated.View>
 
                 {/* CTA Section */}
                 <Animated.View
-                    entering={FadeIn.delay(800).duration(800)}
+                    entering={FadeIn.delay(900).duration(800)}
                     style={styles.ctaSection}
                 >
-                    <Text style={styles.ctaTitle}>
-                        Need a Consultation?
-                    </Text>
                     <TouchableOpacity
                         style={styles.ctaButton}
-                        onPress={() => navigation.navigate("Appointment", { doctor: doctorData.name })}
+                        onPress={() => navigation.navigate("Appointment", {
+                            doctor: doctorData.name,
+                            selectedDate: DAYS.find(d => d.id === selectedDate),
+                            selectedTime: selectedTime
+                        })}
                     >
                         <Text style={styles.ctaButtonText}>Book Appointment</Text>
                     </TouchableOpacity>
@@ -109,16 +183,16 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: "#fff" },
     heroSection: {
         alignItems: "center",
-        paddingVertical: 32,
-        backgroundColor: "#f0f9ff", 
-        borderBottomLeftRadius: 32,
-        borderBottomRightRadius: 32,
-        marginBottom: 20,
+        paddingVertical: hp(4),
+        backgroundColor: "#f0f9ff",
+        borderBottomLeftRadius: wp(8),
+        borderBottomRightRadius: wp(8),
+        marginBottom: hp(2.5),
     },
     imageWrapper: {
-        width: 140,
-        height: 140,
-        borderRadius: 70,
+        width: wp(35),
+        height: wp(35),
+        borderRadius: wp(17.5),
         overflow: "hidden",
         borderWidth: 4,
         borderColor: "#fff",
@@ -127,7 +201,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 8,
         elevation: 5,
-        marginBottom: 16,
+        marginBottom: hp(2),
         backgroundColor: '#e2e8f0',
     },
     doctorImage: {
@@ -135,93 +209,125 @@ const styles = StyleSheet.create({
         height: "100%",
     },
     name: {
-        fontSize: 26,
+        fontSize: moderateScale(26),
         fontWeight: "700",
         color: "#111827",
-        marginBottom: 4,
+        marginBottom: hp(0.5),
         textAlign: 'center',
     },
     specialization: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
         color: "#2563eb",
         fontWeight: "600",
-        marginBottom: 4,
+        marginBottom: hp(0.5),
         textAlign: 'center',
     },
     qualification: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         color: "#6b7280",
         textAlign: 'center',
     },
     content: {
-        padding: 20,
+        padding: wp(5),
     },
     section: {
-        marginBottom: 24,
+        marginBottom: hp(3),
     },
     sectionHeader: {
-        fontSize: 20,
+        fontSize: moderateScale(20),
         fontWeight: "700",
         color: "#111827",
-        marginBottom: 12,
+        marginBottom: hp(1.5),
     },
     descriptionText: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
         color: "#4b5563",
-        lineHeight: 24,
+        lineHeight: moderateScale(24),
     },
-    detailsBox: {
-        backgroundColor: "#f9fafb",
-        borderRadius: 12,
-        padding: 16,
-        marginBottom: 32,
+    dateList: {
+        flexDirection: 'row',
+        marginBottom: hp(1),
+    },
+    dateCard: {
+        width: wp(16),
+        height: hp(10),
+        backgroundColor: '#f9fafb',
+        borderRadius: wp(3),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: wp(3),
         borderWidth: 1,
-        borderColor: "#f3f4f6",
+        borderColor: '#f3f4f6',
     },
-    detailRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingVertical: 8,
+    selectedDateCard: {
+        backgroundColor: '#2563eb',
+        borderColor: '#2563eb',
     },
-    divider: {
-        height: 1,
-        backgroundColor: "#e5e7eb",
-        marginVertical: 4,
+    dayText: {
+        fontSize: moderateScale(14),
+        color: '#6b7280',
+        marginBottom: hp(0.5),
     },
-    detailLabel: {
-        fontSize: 15,
-        color: "#6b7280",
-        fontWeight: "500",
+    dateText: {
+        fontSize: moderateScale(18),
+        fontWeight: 'bold',
+        color: '#111827',
     },
-    detailValue: {
-        fontSize: 15,
-        color: "#111827",
-        fontWeight: "600",
-        maxWidth: "60%",
-        textAlign: "right",
+    selectedText: {
+        color: '#fff',
+    },
+    timeGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+    },
+    timeSlot: {
+        width: '31%',
+        paddingVertical: hp(1.5),
+        backgroundColor: '#f9fafb',
+        borderRadius: wp(3),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: hp(1.5),
+        borderWidth: 1,
+        borderColor: '#f3f4f6',
+    },
+    selectedTimeSlot: {
+        backgroundColor: '#2563eb',
+        borderColor: '#2563eb',
+    },
+    timeText: {
+        fontSize: moderateScale(14),
+        color: '#4b5563',
+        fontWeight: '500',
+    },
+    disabledTimeSlot: {
+        backgroundColor: '#f3f4f6',
+        borderColor: '#e5e7eb',
+        opacity: 0.5,
+    },
+    disabledTimeText: {
+        color: '#9ca3af',
     },
     ctaSection: {
         alignItems: "center",
-        paddingTop: 10,
-    },
-    ctaTitle: {
-        fontSize: 18,
-        fontWeight: "700",
-        color: "#111827",
-        textAlign: "center",
-        marginBottom: 16,
+        paddingTop: hp(1),
+        marginBottom: hp(4),
     },
     ctaButton: {
         backgroundColor: "#2563eb",
-        paddingVertical: 16,
-        paddingHorizontal: 32,
-        borderRadius: 8,
+        paddingVertical: hp(2.2),
+        paddingHorizontal: wp(8),
+        borderRadius: wp(3),
         width: "100%",
         alignItems: "center",
+        shadowColor: "#2563eb",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3, shadowRadius: 8, elevation: 5,
     },
     ctaButtonText: {
         color: "#fff",
-        fontSize: 16,
-        fontWeight: "600",
+        fontSize: moderateScale(18),
+        fontWeight: "700",
     },
 });

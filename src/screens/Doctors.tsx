@@ -13,11 +13,12 @@ import { useNavigation } from "@react-navigation/native";
 
 import Animated, { FadeInDown } from "react-native-reanimated";
 
-const { width } = Dimensions.get("window");
-const CARD_WIDTH = width / 2 - 24;
+import { wp, hp, moderateScale } from "../utils/responsive";
 
 const Doctors = () => {
     const navigation = useNavigation<any>();
+
+    const CARD_WIDTH = wp(44);
 
     return (
         <View style={styles.container}>
@@ -26,6 +27,7 @@ const Doctors = () => {
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 columnWrapperStyle={styles.row}
+                contentContainerStyle={styles.listContent}
                 renderItem={({ item, index }) => (
                     <Animated.View
                         entering={FadeInDown.delay(index * 100).duration(600).springify()}
@@ -52,19 +54,24 @@ const Doctors = () => {
 export default Doctors;
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, backgroundColor: "#f8fafc" },
-    heading: { fontSize: 26, fontWeight: "700", textAlign: "center", marginBottom: 16 },
-    row: { justifyContent: "space-between", marginBottom: 12 },
+    container: { flex: 1, backgroundColor: "#f8fafc" },
+    listContent: { padding: wp(4) },
+    heading: { fontSize: moderateScale(26), fontWeight: "700", textAlign: "center", marginBottom: hp(2) },
+    row: { justifyContent: "space-between", marginBottom: hp(1.5) },
     card: {
         width: "100%",
         backgroundColor: "white",
-        borderRadius: 16,
+        borderRadius: wp(4),
         overflow: "hidden",
         elevation: 4,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
     },
-    image: { width: "100%", height: 160 },
-    cardContent: { padding: 12, alignItems: "center" },
-    name: { fontSize: 15, fontWeight: "700", textAlign: "center" },
-    specialization: { fontSize: 13, color: "#2563eb" },
-    experience: { fontSize: 12, color: "#6b7280" },
+    image: { width: "100%", height: hp(18) },
+    cardContent: { padding: wp(3), alignItems: "center" },
+    name: { fontSize: moderateScale(15), fontWeight: "700", textAlign: "center" },
+    specialization: { fontSize: moderateScale(13), color: "#2563eb", marginTop: hp(0.5) },
+    experience: { fontSize: moderateScale(12), color: "#6b7280", marginTop: hp(0.2) },
 });

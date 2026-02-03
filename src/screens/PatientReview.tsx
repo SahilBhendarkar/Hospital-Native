@@ -10,7 +10,7 @@ import {
     FlatList,
 } from 'react-native';
 
-const { width } = Dimensions.get('window');
+import { wp, hp, moderateScale } from '../utils/responsive';
 
 const reviews = [
     {
@@ -122,23 +122,23 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f8fafc',
-        paddingVertical: 24,
-        paddingHorizontal: 16,
+        paddingVertical: hp(3),
+        paddingHorizontal: wp(4),
     },
     title: {
-        fontSize: 28,
+        fontSize: moderateScale(28),
         fontWeight: '700',
         textAlign: 'center',
         color: '#1e3a8a',
-        marginBottom: 24,
+        marginBottom: hp(3),
     },
     reviewsList: {
-        gap: 16,
+        gap: hp(2),
     },
     reviewCard: {
         backgroundColor: '#fff',
-        borderRadius: 16,
-        padding: 16,
+        borderRadius: wp(4),
+        padding: wp(4),
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
@@ -146,30 +146,30 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     reviewHeader: {
-        marginBottom: 12,
+        marginBottom: hp(1.5),
     },
     reviewerName: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         fontWeight: '600',
         color: '#1e40af',
-        marginBottom: 4,
+        marginBottom: hp(0.5),
     },
     reviewDate: {
-        fontSize: 12,
+        fontSize: moderateScale(12),
         color: '#999',
     },
     ratingContainer: {
         flexDirection: 'row',
-        gap: 4,
-        marginBottom: 12,
+        gap: wp(1),
+        marginBottom: hp(1.5),
     },
     star: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
     },
     reviewText: {
-        fontSize: 13,
+        fontSize: moderateScale(13),
         color: '#4b5563',
-        lineHeight: 20,
+        lineHeight: moderateScale(20),
     },
 });
 

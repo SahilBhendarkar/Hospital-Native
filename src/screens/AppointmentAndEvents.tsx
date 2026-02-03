@@ -29,12 +29,14 @@ import { useToast } from '../context/ToastContext';
 import { doctors, Doctor } from '../data/doctors';
 import * as Haptics from 'expo-haptics';
 import SearchBar from '../components/ui/SearchBar';
+import { useRoute } from '@react-navigation/native';
 
-const { width } = Dimensions.get('window');
+import { wp, hp, moderateScale } from '../utils/responsive';
 
 const AppointmentAndEvents = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
+  const route = useRoute<any>();
 
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(false);
@@ -56,6 +58,23 @@ const AppointmentAndEvents = () => {
     doctorName: '',
     message: '',
   });
+
+  useEffect(() => {
+    if (route.params) {
+      const { doctor, selectedDate: passedDate, selectedTime } = route.params;
+      if (doctor || passedDate || selectedTime) {
+        setFormData(prev => ({
+          ...prev,
+          doctorName: doctor || prev.doctorName,
+          date: passedDate?.fullDate || prev.date,
+          time: selectedTime || prev.time,
+        }));
+        if (passedDate?.fullDate) {
+          setSelectedDate(new Date(passedDate.fullDate));
+        }
+      }
+    }
+  }, [route.params]);
 
   const fetchAppointments = async () => {
     setLoading(true);
@@ -228,13 +247,13 @@ const AppointmentAndEvents = () => {
               </Animated.View>
 
               <Animated.View entering={FadeInDown.delay(700)}>
-                <View style={{ flexDirection: 'row', gap: 12 }}>
+                <View style={{ flexDirection: 'row', gap: wp(3) }}>
                   <TouchableOpacity
                     style={[styles.input, { flex: 1 }]}
                     onPress={() => setShowDatePicker(true)}
                     activeOpacity={0.7}
                   >
-                    <Text style={{ color: formData.date ? '#1e293b' : '#999' }}>
+                    <Text style={{ color: formData.date ? '#1e293b' : '#999', fontSize: moderateScale(14) }}>
                       {formData.date || ' Date*'}
                     </Text>
                   </TouchableOpacity>
@@ -244,7 +263,7 @@ const AppointmentAndEvents = () => {
                     onPress={() => setShowTimePicker(true)}
                     activeOpacity={0.7}
                   >
-                    <Text style={{ color: formData.time ? '#1e293b' : '#999' }}>
+                    <Text style={{ color: formData.time ? '#1e293b' : '#999', fontSize: moderateScale(14) }}>
                       {formData.time || ' Time*'}
                     </Text>
                   </TouchableOpacity>
@@ -257,7 +276,7 @@ const AppointmentAndEvents = () => {
                   onPress={() => setShowDoctorModal(true)}
                   activeOpacity={0.7}
                 >
-                  <Text style={{ color: formData.doctorName ? '#1e293b' : '#999' }}>
+                  <Text style={{ color: formData.doctorName ? '#1e293b' : '#999', fontSize: moderateScale(14) }}>
                     {formData.doctorName || 'Select Doctor*'}
                   </Text>
                 </TouchableOpacity>
@@ -303,7 +322,7 @@ const AppointmentAndEvents = () => {
                 entering={FadeInDown.delay(200)}
                 style={styles.emptyStateContainer}
               >
-                <MaterialCommunityIcons name="calendar-blank-outline" size={80} color="#cbd5e1" />
+                <MaterialCommunityIcons name="calendar-blank-outline" size={wp(20)} color="#cbd5e1" />
                 <Text style={styles.emptyStateTitle}>No Appointments Yet</Text>
                 <Text style={styles.emptyStateText}>
                   Your scheduled appointments will appear here. Book one above to get started!
@@ -321,14 +340,14 @@ const AppointmentAndEvents = () => {
                     <Text style={styles.apptDate}>
                       {appt.date} • {appt.time}
                     </Text>
-                    <Text style={[styles.statusBadge, styles[appt.status]]}>
+                    <Text style={[styles.statusBadge, (styles as any)[appt.status]]}>
                       {appt.status.toUpperCase()}
                     </Text>
                   </View>
 
                   <View style={styles.apptActions}>
                     <TouchableOpacity onPress={() => handleEdit(appt)} style={styles.actionBtn}>
-                      <MaterialCommunityIcons name="pencil" size={25} color="#2563eb" />
+                      <MaterialCommunityIcons name="pencil" size={wp(6)} color="#2563eb" />
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
@@ -337,7 +356,7 @@ const AppointmentAndEvents = () => {
                       }}
                       style={styles.actionBtn}
                     >
-                      <MaterialCommunityIcons name="trash-can-outline" size={30} color="#ef4444" />
+                      <MaterialCommunityIcons name="trash-can-outline" size={wp(7)} color="#ef4444" />
                     </TouchableOpacity>
                   </View>
                 </Animated.View>
@@ -408,7 +427,7 @@ const AppointmentAndEvents = () => {
               </TouchableOpacity>
             </View>
 
-            <View style={{ marginBottom: 16 }}>
+            <View style={{ marginBottom: hp(2) }}>
               <SearchBar
                 placeholder="Search doctors..."
                 value={searchQuery}
@@ -443,7 +462,7 @@ const AppointmentAndEvents = () => {
               )}
               showsVerticalScrollIndicator={false}
               ListEmptyComponent={() => (
-                <View style={{ alignItems: 'center', padding: 20 }}>
+                <View style={{ alignItems: 'center', padding: wp(5) }}>
                   <Text style={{ color: '#64748b' }}>No doctors found</Text>
                 </View>
               )}
@@ -457,85 +476,88 @@ const AppointmentAndEvents = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f1f5f9' },
-  content: { padding: 16, gap: 24 },
+  content: { padding: wp(4), gap: hp(3) },
   formSection: {
     backgroundColor: '#fff',
-    borderRadius: 24,
-    padding: 20,
+    borderRadius: wp(6),
+    padding: wp(5),
     elevation: 3,
   },
-  formTitle: { fontSize: 24, fontWeight: '700', color: '#1e3a8a' },
-  formSubtitle: { color: '#64748b', marginBottom: 16 },
-  form: { gap: 12 },
+  formTitle: { fontSize: moderateScale(24), fontWeight: '700', color: '#1e3a8a' },
+  formSubtitle: { color: '#64748b', marginBottom: hp(2), fontSize: moderateScale(14) },
+  form: { gap: hp(1.5) },
   input: {
     borderWidth: 1,
     borderColor: '#e2e8f0',
-    borderRadius: 12,
-    padding: 14,
+    borderRadius: wp(3),
+    padding: wp(3.5),
     backgroundColor: '#f8fafc',
+    fontSize: moderateScale(14),
   },
-  textarea: { minHeight: 100 },
+  textarea: { minHeight: hp(12) },
   submitButton: {
     backgroundColor: '#2563eb',
-    padding: 14,
-    borderRadius: 12,
+    padding: wp(3.5),
+    borderRadius: wp(3),
     alignItems: 'center',
   },
-  submitButtonText: { color: '#fff', fontWeight: '600' },
+  submitButtonText: { color: '#fff', fontWeight: '600', fontSize: moderateScale(16) },
   listSection: {},
-  listTitle: { fontSize: 20, fontWeight: '700', marginBottom: 16 },
+  listTitle: { fontSize: moderateScale(20), fontWeight: '700', marginBottom: hp(2) },
   apptCard: {
     backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
+    borderRadius: wp(4),
+    padding: wp(4),
+    marginBottom: hp(1.5),
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   apptInfo: { flex: 1 },
-  apptDoctor: { fontWeight: '600' },
-  apptDate: { color: '#64748b', marginVertical: 4 },
+  apptDoctor: { fontWeight: '600', fontSize: moderateScale(16) },
+  apptDate: { color: '#64748b', marginVertical: hp(0.5), fontSize: moderateScale(14) },
   statusBadge: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: '700',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 10,
+    paddingHorizontal: wp(2),
+    paddingVertical: hp(0.3),
+    borderRadius: wp(2.5),
     alignSelf: 'flex-start',
   },
   pending: { backgroundColor: '#fef3c7', color: '#d97706' },
   confirmed: { backgroundColor: '#d1fae5', color: '#059669' },
   cancelled: { backgroundColor: '#fee2e2', color: '#dc2626' },
   completed: { backgroundColor: '#e0e7ff', color: '#4f46e5' },
-  apptActions: { flexDirection: 'row', gap: 8 },
+  apptActions: { flexDirection: 'row', gap: wp(2) },
   actionBtn: {
-    padding: 15,
+    padding: wp(3.5),
     backgroundColor: '#f8fafc',
-    borderRadius: 10,
+    borderRadius: wp(2.5),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   emptyStateContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 40,
+    paddingVertical: hp(5),
     backgroundColor: '#fff',
-    borderRadius: 24,
+    borderRadius: wp(6),
     borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: '#cbd5e1',
   },
   emptyStateTitle: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: '700',
     color: '#475569',
-    marginTop: 16,
+    marginTop: hp(2),
   },
   emptyStateText: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#64748b',
     textAlign: 'center',
-    paddingHorizontal: 40,
-    marginTop: 8,
-    lineHeight: 20,
+    paddingHorizontal: wp(10),
+    marginTop: hp(1),
+    lineHeight: moderateScale(20),
   },
   noData: { textAlign: 'center', color: '#64748b' },
   modalOverlay: {
@@ -545,46 +567,46 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#fff',
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
+    borderTopLeftRadius: wp(8),
+    borderTopRightRadius: wp(8),
     height: '80%',
-    padding: 24,
+    padding: wp(6),
   },
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: hp(2.5),
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: '700',
     color: '#1e3a8a',
   },
   doctorItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    borderRadius: 16,
+    padding: wp(4),
+    borderRadius: wp(4),
     backgroundColor: '#f8fafc',
-    marginBottom: 12,
-    gap: 16,
+    marginBottom: hp(1.5),
+    gap: wp(4),
   },
   doctorIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: wp(12),
+    height: wp(12),
+    borderRadius: wp(6),
     backgroundColor: '#eff6ff',
     alignItems: 'center',
     justifyContent: 'center',
   },
   doctorItemName: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: '600',
     color: '#1e293b',
   },
   doctorItemSpec: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#64748b',
   },
 });

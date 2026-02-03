@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     Alert,
 } from "react-native";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PatientItem from "../components/patients/PatientItem";
 import { getPatients } from "../api/services/patient.service";
 import type { Patient } from "../api/types";
@@ -16,6 +16,7 @@ import NetInfo, { useNetInfo } from "@react-native-community/netinfo";
 import { storage } from "../utils/storage";
 import Animated, { FadeInDown, FadeIn, ZoomIn } from "react-native-reanimated";
 import { Feather } from "@expo/vector-icons";
+import { wp, hp, moderateScale } from "../utils/responsive";
 
 const PatientList = () => {
     const [patients, setPatients] = useState<Patient[]>([]);
@@ -49,7 +50,7 @@ const PatientList = () => {
                 const cachedData = await storage.load('patients_cache');
                 if (cachedData) {
                     setPatients(cachedData);
-                    setHasMore(false); // No pagination in offline mode for now
+                    setHasMore(false);
                 }
             }
             setInitialLoading(false);
@@ -58,7 +59,6 @@ const PatientList = () => {
             return;
         }
 
-        // Artificial delay removed or kept based on preference, keeping for consistency but reducing
         await new Promise(resolve => setTimeout(resolve, 500));
 
         try {
@@ -84,22 +84,40 @@ const PatientList = () => {
         setLoadingMore(false);
     };
 
-    const handleLongPress = (patient: Patient) => {
+    const handleLongPress = React.useCallback((patient: Patient) => {
         setSelectedPatient(patient);
         setShowActions(true);
-    };
+    }, []);
 
-    const closeActions = () => {
+    const closeActions = React.useCallback(() => {
         setShowActions(false);
         setSelectedPatient(null);
-    };
+    }, []);
 
-    const onRefresh = async () => {
+    const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
         setHasMore(true);
         await loadPatients(1, true);
         setRefreshing(false);
-    };
+    }, [loadPatients]);
+
+    const renderItem = React.useCallback(({ item, index }: { item: Patient; index: number }) => (
+        <Animated.View entering={FadeIn.delay(index % 10 * 100).duration(400)}>
+            <PatientItem
+                patient={item}
+                onPress={() => { }}
+                onLongPress={() => handleLongPress(item)}
+            />
+        </Animated.View>
+    ), [handleLongPress]);
+
+    const keyExtractor = React.useCallback((item: Patient) => item.id, []);
+
+    const getItemLayout = React.useCallback((_: any, index: number) => ({
+        length: hp(10), // Approximate height of PatientItem
+        offset: hp(10) * index,
+        index,
+    }), []);
 
     if (initialLoading && patients.length === 0) {
         return (
@@ -121,34 +139,29 @@ const PatientList = () => {
 
             <FlatList
                 data={patients}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item, index }) => (
-                    <Animated.View entering={FadeIn.delay(index * 100).duration(400)}>
-                        <PatientItem
-                            patient={item}
-                            onPress={() => { }}
-                            onLongPress={() => handleLongPress(item)}
-                        />
-                    </Animated.View>
-                )}
+                keyExtractor={keyExtractor}
+                contentContainerStyle={styles.listContent}
+                renderItem={renderItem}
                 onEndReached={() => loadPatients(page)}
-                onEndReachedThreshold={0.6}
+                onEndReachedThreshold={0.5}
                 refreshing={refreshing}
                 onRefresh={onRefresh}
-
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                windowSize={5}
+                getItemLayout={getItemLayout}
+                removeClippedSubviews={true}
                 ListFooterComponent={
                     loadingMore ? (
                         <ActivityIndicator
                             size="small"
-                            style={{ marginVertical: 16 }}
+                            style={{ marginVertical: hp(2) }}
                         />
                     ) : null
                 }
-
                 showsVerticalScrollIndicator={false}
             />
 
-            {/* Quick Action Modal */}
             <Modal
                 visible={showActions}
                 transparent
@@ -173,7 +186,7 @@ const PatientList = () => {
                                 closeActions();
                             }}>
                                 <View style={[styles.iconBg, { backgroundColor: '#10b981' }]}>
-                                    <Feather name="phone" size={24} color="#fff" />
+                                    <Feather name="phone" size={moderateScale(24)} color="#fff" />
                                 </View>
                                 <Text style={styles.actionLabel}>Call</Text>
                             </TouchableOpacity>
@@ -183,7 +196,7 @@ const PatientList = () => {
                                 closeActions();
                             }}>
                                 <View style={[styles.iconBg, { backgroundColor: '#3b82f6' }]}>
-                                    <Feather name="message-square" size={24} color="#fff" />
+                                    <Feather name="message-square" size={moderateScale(24)} color="#fff" />
                                 </View>
                                 <Text style={styles.actionLabel}>Message</Text>
                             </TouchableOpacity>
@@ -193,7 +206,7 @@ const PatientList = () => {
                                 closeActions();
                             }}>
                                 <View style={[styles.iconBg, { backgroundColor: '#8b5cf6' }]}>
-                                    <Feather name="user" size={24} color="#fff" />
+                                    <Feather name="user" size={moderateScale(24)} color="#fff" />
                                 </View>
                                 <Text style={styles.actionLabel}>Profile</Text>
                             </TouchableOpacity>
@@ -205,19 +218,20 @@ const PatientList = () => {
     );
 };
 
-export default PatientList;
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#f4f6f8",
-        paddingHorizontal: 12,
+    },
+    listContent: {
+        paddingHorizontal: wp(3),
+        paddingBottom: hp(2),
     },
     header: {
-        fontSize: 26,
+        fontSize: moderateScale(26),
         fontWeight: "700",
         textAlign: "center",
-        marginVertical: 16,
+        marginVertical: hp(2),
     },
     loader: {
         flex: 1,
@@ -226,14 +240,16 @@ const styles = StyleSheet.create({
     },
     offlineBanner: {
         backgroundColor: '#ff3b30',
-        paddingVertical: 10,
-        marginBottom: 10,
-        borderRadius: 8,
+        paddingVertical: hp(1.2),
+        marginHorizontal: wp(3),
+        marginBottom: hp(1.2),
+        borderRadius: wp(2),
         alignItems: 'center',
     },
     offlineText: {
         color: '#fff',
         fontWeight: 'bold',
+        fontSize: moderateScale(14),
     },
     modalOverlay: {
         flex: 1,
@@ -242,48 +258,50 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     actionMenu: {
-        width: '80%',
+        width: wp(80),
         backgroundColor: '#fff',
-        borderRadius: 24,
-        padding: 24,
+        borderRadius: wp(6),
+        padding: wp(6),
         alignItems: 'center',
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 10 },
+        shadowOffset: { width: 0, height: hp(1) },
         shadowOpacity: 0.25,
         shadowRadius: 15,
         elevation: 10,
     },
     actionTitle: {
-        fontSize: 20,
+        fontSize: moderateScale(20),
         fontWeight: '700',
         color: '#111827',
-        marginBottom: 4,
+        marginBottom: hp(0.5),
     },
     actionSubtitle: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         color: '#6b7280',
-        marginBottom: 20,
+        marginBottom: hp(2.5),
     },
     actionGrid: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '100%',
-        marginTop: 10,
+        marginTop: hp(1),
     },
     actionItem: {
         alignItems: 'center',
-        gap: 8,
+        gap: hp(1),
     },
     iconBg: {
-        width: 56,
-        height: 56,
-        borderRadius: 28,
+        width: wp(14),
+        height: wp(14),
+        borderRadius: wp(7),
         justifyContent: 'center',
         alignItems: 'center',
     },
     actionLabel: {
-        fontSize: 12,
+        fontSize: moderateScale(12),
         fontWeight: '600',
         color: '#374151',
     },
 });
+
+export default PatientList;

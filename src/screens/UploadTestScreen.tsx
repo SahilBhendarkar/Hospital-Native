@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
+import { wp, hp, moderateScale } from "../utils/responsive";
 
 const UploadTestScreen = () => {
     const cameraRef = useRef<CameraView>(null);
@@ -18,7 +19,6 @@ const UploadTestScreen = () => {
     const [photoUri, setPhotoUri] = useState<string | null>(null);
     const [uploading, setUploading] = useState(false);
 
-    /* ---------- Camera Permission ---------- */
     useEffect(() => {
         if (!permission) return;
         if (!permission.granted) {
@@ -26,7 +26,6 @@ const UploadTestScreen = () => {
         }
     }, [permission]);
 
-    /* ---------- Capture Photo ---------- */
     const takePhoto = async () => {
         if (!cameraRef.current) return;
 
@@ -38,7 +37,6 @@ const UploadTestScreen = () => {
         setPhotoUri(photo.uri);
     };
 
-    /* ---------- Pick From Gallery ---------- */
     const pickFromGallery = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
@@ -56,13 +54,11 @@ const UploadTestScreen = () => {
         }
     };
 
-    /* ---------- Mock Upload ---------- */
     const handleUpload = async () => {
         if (!photoUri) return;
 
         setUploading(true);
 
-        // Mock upload (replace with API later)
         setTimeout(() => {
             console.log("Uploading image:", photoUri);
             setUploading(false);
@@ -71,7 +67,6 @@ const UploadTestScreen = () => {
         }, 1500);
     };
 
-    /* ---------- Permission UI ---------- */
     if (!permission) return <View />;
 
     if (!permission.granted) {
@@ -93,13 +88,11 @@ const UploadTestScreen = () => {
     return (
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={styles.container}>
-                {/* Header */}
                 <Text style={styles.title}>Upload Image</Text>
                 <Text style={styles.subtitle}>
                     Capture an image using camera or select from gallery.
                 </Text>
 
-                {/* Camera / Preview */}
                 <View style={styles.cameraWrapper}>
                     {!photoUri ? (
                         <>
@@ -116,7 +109,6 @@ const UploadTestScreen = () => {
                     )}
                 </View>
 
-                {/* Action Buttons */}
                 <View style={styles.actions}>
                     {!photoUri && (
                         <TouchableOpacity
@@ -156,52 +148,49 @@ const UploadTestScreen = () => {
     );
 };
 
-export default UploadTestScreen;
-
-
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: "#f9fafb",
     },
     container: {
-        padding: 20,
+        padding: wp(5),
     },
     title: {
-        fontSize: 26,
+        fontSize: moderateScale(26),
         fontWeight: "700",
         color: "#111827",
-        marginBottom: 6,
+        marginBottom: hp(0.5),
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
         color: "#6b7280",
-        marginBottom: 20,
+        marginBottom: hp(2.5),
     },
     cameraWrapper: {
         width: "100%",
         aspectRatio: 3 / 4,
         backgroundColor: "#000",
-        borderRadius: 16,
+        borderRadius: wp(4),
         overflow: "hidden",
-        marginBottom: 20,
+        marginBottom: hp(2.5),
     },
     camera: {
         flex: 1,
     },
     captureButton: {
         position: "absolute",
-        bottom: 20,
+        bottom: hp(2.5),
         alignSelf: "center",
         backgroundColor: "#10b981",
-        paddingHorizontal: 36,
-        paddingVertical: 14,
-        borderRadius: 30,
+        paddingHorizontal: wp(9),
+        paddingVertical: hp(1.8),
+        borderRadius: wp(7.5),
     },
     captureText: {
         color: "#fff",
         fontWeight: "700",
-        fontSize: 16,
+        fontSize: moderateScale(16),
     },
     preview: {
         width: "100%",
@@ -211,36 +200,38 @@ const styles = StyleSheet.create({
     },
     actions: {
         flexDirection: "row",
-        gap: 12,
+        gap: wp(3),
     },
     primaryBtn: {
         flex: 1,
         backgroundColor: "#10b981",
-        paddingVertical: 14,
-        borderRadius: 10,
+        paddingVertical: hp(1.8),
+        borderRadius: wp(2.5),
         alignItems: "center",
     },
     secondaryBtn: {
         flex: 1,
         backgroundColor: "#064bd4",
-        paddingVertical: 14,
-        borderRadius: 10,
+        paddingVertical: hp(1.8),
+        borderRadius: wp(2.5),
         alignItems: "center",
     },
     btnText: {
         color: "#fff",
         fontWeight: "700",
-        fontSize: 15,
+        fontSize: moderateScale(15),
     },
     center: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        padding: 24,
+        padding: wp(6),
     },
     infoText: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
         color: "#111827",
-        marginBottom: 16,
+        marginBottom: hp(2),
     },
 });
+
+export default UploadTestScreen;

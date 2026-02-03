@@ -14,7 +14,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import Animated, { FadeInDown, FadeInRight, FadeIn } from 'react-native-reanimated';
-
 import { useAuth } from '../context/AuthContext';
 import SearchBar from '../components/ui/SearchBar';
 import QuickActionCard from '../components/ui/QuickActionCard';
@@ -27,6 +26,7 @@ import { getAppointments } from '../api/services/appointment.service';
 import { Appointment } from '../api/mock/data';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import * as Haptics from 'expo-haptics';
+import { wp, hp, moderateScale } from '../utils/responsive';
 
 type RootStackParamList = {
     Doctors: undefined;
@@ -169,6 +169,7 @@ const HomeScreen = () => {
                                 }}
                             />
                         </Animated.View>
+                        <View style={{ width: wp(4) }} />
                         <Animated.View style={{ flex: 1 }} entering={FadeInDown.delay(400).springify()}>
                             <QuickActionCard
                                 title="Departments"
@@ -180,6 +181,7 @@ const HomeScreen = () => {
                                 }}
                             />
                         </Animated.View>
+                        <View style={{ width: wp(4) }} />
                         <Animated.View style={{ flex: 1 }} entering={FadeInDown.delay(500).springify()}>
                             <QuickActionCard
                                 title="Book Appt"
@@ -241,8 +243,8 @@ const HomeScreen = () => {
                         {loading ? (
                             // Skeleton states
                             [1, 2].map((_, i) => (
-                                <View key={i} style={{ width: 280, marginRight: 16 }}>
-                                    <SkeletonLoader height={160} width={280} borderRadius={20} />
+                                <View key={i} style={{ width: wp(70), marginRight: wp(4) }}>
+                                    <SkeletonLoader height={hp(20)} width={wp(70)} borderRadius={wp(5)} />
                                 </View>
                             ))
                         ) : appointments.filter(appt =>
@@ -257,6 +259,7 @@ const HomeScreen = () => {
                                 .map((appt, index) => (
                                     <Animated.View
                                         key={appt.id}
+                                        style={{ marginRight: wp(4) }}
                                         entering={FadeInRight.delay(1100 + index * 100).springify()}
                                     >
                                         <UpcomingAppointmentCard
@@ -271,7 +274,7 @@ const HomeScreen = () => {
                                     </Animated.View>
                                 ))
                         ) : (
-                            <Text style={{ color: '#666', fontStyle: 'italic', paddingHorizontal: 20 }}>
+                            <Text style={{ color: '#666', fontStyle: 'italic', paddingHorizontal: wp(5) }}>
                                 {searchQuery ? 'No matching appointments found' : 'No upcoming appointments'}
                             </Text>
                         )}
@@ -308,10 +311,10 @@ const HomeScreen = () => {
                     </Animated.Text>
                     <TouchableOpacity
                         style={{
-                            padding: 16,
+                            padding: wp(4),
                             backgroundColor: "#2563eb",
-                            borderRadius: 8,
-                            margin: 16,
+                            borderRadius: wp(2),
+                            margin: wp(4),
                         }}
                         onPress={() => {
                             const url = Linking.createURL("/departments");
@@ -320,7 +323,7 @@ const HomeScreen = () => {
                         }}
                     >
 
-                        <Text style={{ color: "#fff", textAlign: "center" }}>
+                        <Text style={{ color: "#fff", textAlign: "center", fontSize: moderateScale(14) }}>
                             Test Deep Link → Departments (Expo Go)
                         </Text>
                     </TouchableOpacity>
@@ -339,27 +342,27 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingTop: 14,
-        paddingBottom: 16,
+        paddingHorizontal: wp(5),
+        paddingTop: hp(1.5),
+        paddingBottom: hp(2),
         backgroundColor: '#fff',
     },
     headerLeft: {
         flex: 1,
     },
     greeting: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         color: '#6b7280',
-        marginBottom: 2,
+        marginBottom: hp(0.2),
     },
     userName: {
-        fontSize: 20,
+        fontSize: moderateScale(20),
         fontWeight: '700',
         color: '#111827',
-        marginBottom: 4,
+        marginBottom: hp(0.5),
     },
     dateText: {
-        fontSize: 12,
+        fontSize: moderateScale(12),
         color: '#667eea',
         fontWeight: '500',
     },
@@ -368,31 +371,31 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     iconButton: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: wp(10),
+        height: wp(10),
+        borderRadius: wp(5),
         backgroundColor: '#f3f4f6',
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12,
+        marginRight: wp(3),
         position: 'relative',
     },
     notificationBadge: {
         position: 'absolute',
-        top: 8,
-        right: 8,
-        width: 8,
-        height: 8,
-        borderRadius: 4,
+        top: wp(2),
+        right: wp(2),
+        width: wp(2),
+        height: wp(2),
+        borderRadius: wp(1),
         backgroundColor: '#ef4444',
         borderWidth: 1,
         borderColor: '#fff',
         zIndex: 1,
     },
     profileButton: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: wp(10),
+        height: wp(10),
+        borderRadius: wp(5),
         borderWidth: 2,
         borderColor: '#e5e7eb',
         overflow: 'hidden',
@@ -403,46 +406,46 @@ const styles = StyleSheet.create({
     },
 
     scrollContent: {
-        paddingBottom: 32,
+        paddingBottom: hp(4),
     },
 
     searchContainer: {
-        paddingHorizontal: 20,
-        paddingTop: 16,
-        paddingBottom: 20,
+        paddingHorizontal: wp(5),
+        paddingTop: hp(2),
+        paddingBottom: hp(2.5),
         backgroundColor: '#fff',
-        borderBottomLeftRadius: 24,
-        borderBottomRightRadius: 24,
+        borderBottomLeftRadius: wp(6),
+        borderBottomRightRadius: wp(6),
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.08,
         shadowRadius: 12,
         elevation: 6,
-        marginBottom: 24,
+        marginBottom: hp(3),
     },
 
     sectionContainer: {
-        marginBottom: 28,
-        paddingHorizontal: 20,
+        marginBottom: hp(3.5),
+        paddingHorizontal: wp(5),
     },
     lastSection: {
-        marginBottom: 48,
+        marginBottom: hp(6),
     },
     sectionHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 14,
+        marginBottom: hp(1.5),
     },
     sectionTitle: {
-        fontSize: 18,
+        fontSize: moderateScale(18),
         fontWeight: '700',
         color: '#111827',
-        marginBottom: 14,
+        marginBottom: hp(1.5),
 
     },
     seeAllText: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         color: '#667eea',
         fontWeight: '600',
     },
@@ -456,11 +459,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        rowGap: 16,
+        rowGap: hp(2),
     },
 
     horizontalScrollContent: {
-        paddingRight: 20,
+        paddingRight: wp(5),
     },
 });
 

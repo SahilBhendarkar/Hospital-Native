@@ -13,7 +13,7 @@ import {
 const surgeryImage = require("../../assets/images/about.png");
 
 
-const { width } = Dimensions.get("window");
+import { wp, hp, moderateScale } from "../utils/responsive";
 
 const About = () => {
     const imageOpacity = useRef(new Animated.Value(0)).current;
@@ -128,7 +128,7 @@ const About = () => {
                                 <TouchableOpacity
                                     style={styles.button}
                                     onPress={() =>
-                                        Linking.openURL("https://lifelinesurat.com/about-us/")
+                                        Linking.openURL(" ")
                                     }
                                 >
                                     <Text style={styles.buttonText}>Read More</Text>
@@ -148,15 +148,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     content: {
-        padding: 16,
+        padding: wp(4),
     },
     grid: {
-        gap: 32,
+        gap: hp(4),
     },
     imageSection: {
-        width: width - 32,
+        width: '100%',
         aspectRatio: 1,
-        borderRadius: 24,
+        borderRadius: wp(6),
         overflow: 'hidden',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
@@ -170,52 +170,52 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     textSection: {
-        gap: 20,
+        gap: hp(2.5),
     },
     title: {
-        fontSize: 32,
+        fontSize: moderateScale(32),
         fontWeight: '700',
         color: '#1e40af',
         borderBottomWidth: 4,
         borderBottomColor: '#2563eb',
-        paddingBottom: 12,
+        paddingBottom: hp(1.5),
         alignSelf: 'flex-start',
     },
     introText: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
         color: '#374151',
-        lineHeight: 24,
+        lineHeight: moderateScale(24),
     },
     bold: {
         fontWeight: '700',
     },
     servicesList: {
-        marginTop: 12,
-        gap: 8,
+        marginTop: hp(1.5),
+        gap: hp(1),
     },
     serviceItem: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         color: '#1e3a8a',
-        lineHeight: 20,
+        lineHeight: moderateScale(20),
         fontWeight: '500',
     },
     statsText: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
         color: '#111827',
-        lineHeight: 24,
-        marginTop: 12,
+        lineHeight: moderateScale(24),
+        marginTop: hp(1.5),
     },
     button: {
         backgroundColor: '#2563eb',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 8,
+        paddingVertical: hp(1.5),
+        paddingHorizontal: wp(8),
+        borderRadius: wp(2),
         alignSelf: 'flex-start',
-        marginTop: 8,
+        marginTop: hp(1),
     },
     buttonText: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: moderateScale(16),
         fontWeight: '600',
     },
 });

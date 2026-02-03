@@ -19,6 +19,9 @@ import { loginUser } from '../api/auth';
 import { useToast } from '../context/ToastContext';
 import * as Haptics from 'expo-haptics';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { wp, hp, moderateScale } from '../utils/responsive';
+
+import RegisterModal from '../components/auth/RegisterModal';
 
 const LoginScreen = () => {
     const navigation = useNavigation();
@@ -28,6 +31,7 @@ const LoginScreen = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [isRegisterVisible, setIsRegisterVisible] = useState(false);
     const [errors, setErrors] = useState({ email: '', password: '' });
 
     const validateForm = () => {
@@ -170,12 +174,17 @@ const LoginScreen = () => {
 
                     <View style={styles.signupContainer}>
                         <Text style={styles.signupText}>Don't have an account? </Text>
-                        <TouchableOpacity onPress={() => Alert.alert('Sign Up', 'Sign up functionality coming soon!')}>
+                        <TouchableOpacity onPress={() => setIsRegisterVisible(true)}>
                             <Text style={styles.signupLink}>Create Account</Text>
                         </TouchableOpacity>
                     </View>
                 </Animated.View>
             </ScrollView>
+
+            <RegisterModal
+                visible={isRegisterVisible}
+                onClose={() => setIsRegisterVisible(false)}
+            />
         </KeyboardAvoidingView>
     );
 };
@@ -188,31 +197,33 @@ const styles = StyleSheet.create({
     scrollContent: {
         flexGrow: 1,
         justifyContent: 'center',
-        padding: 24,
+        padding: wp(6),
     },
     logoContainer: {
         alignItems: 'center',
-        marginBottom: 40,
+        marginBottom: hp(4),
     },
     logo: {
-        width: 120,
-        height: 120,
-        marginBottom: 16,
+        width: wp(30),
+        height: wp(30),
+        marginBottom: hp(2),
     },
     title: {
-        fontSize: 28,
+        fontSize: moderateScale(28),
         fontWeight: '700',
         color: '#1a1a1a',
-        marginBottom: 8,
+        marginBottom: hp(1),
+        textAlign: 'center',
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
         color: '#666',
+        textAlign: 'center',
     },
     formContainer: {
         backgroundColor: '#fff',
-        borderRadius: 16,
-        padding: 24,
+        borderRadius: wp(4),
+        padding: wp(6),
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
@@ -220,21 +231,21 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     inputContainer: {
-        marginBottom: 20,
+        marginBottom: hp(2.5),
     },
     label: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         fontWeight: '600',
         color: '#333',
-        marginBottom: 8,
+        marginBottom: hp(1),
     },
     input: {
         backgroundColor: '#f8f9fa',
         borderWidth: 1,
         borderColor: '#e1e4e8',
-        borderRadius: 12,
-        padding: 16,
-        fontSize: 16,
+        borderRadius: wp(3),
+        padding: wp(4),
+        fontSize: moderateScale(16),
         color: '#1a1a1a',
     },
     passwordContainer: {
@@ -244,11 +255,11 @@ const styles = StyleSheet.create({
     },
     passwordInput: {
         flex: 1,
-        paddingRight: 50,
+        paddingRight: wp(12),
     },
     eyeIcon: {
         position: 'absolute',
-        right: 16,
+        right: wp(4),
         top: '50%',
         transform: [{ translateY: -12 }],
     },
@@ -257,15 +268,15 @@ const styles = StyleSheet.create({
     },
     errorText: {
         color: '#ff4444',
-        fontSize: 12,
-        marginTop: 4,
+        fontSize: moderateScale(12),
+        marginTop: hp(0.5),
     },
     loginButton: {
         backgroundColor: '#667eea',
-        borderRadius: 12,
-        padding: 16,
+        borderRadius: wp(3),
+        padding: wp(4),
         alignItems: 'center',
-        marginTop: 8,
+        marginTop: hp(1),
         shadowColor: '#667eea',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
@@ -277,21 +288,21 @@ const styles = StyleSheet.create({
     },
     loginButtonText: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: moderateScale(16),
         fontWeight: '700',
     },
     signupContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 24,
+        marginTop: hp(3),
     },
     signupText: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         color: '#666',
     },
     signupLink: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         color: '#667eea',
         fontWeight: '600',
     },

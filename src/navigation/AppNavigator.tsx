@@ -7,6 +7,8 @@ import MainNavigator from './MainNavigator';
 import linking from './linking';
 import LoadingScreen from '../screens/LoadingScreen';
 import LoginScreen from '../screens/LoginScreen';
+import OnboardingScreen from '../screens/OnboardingScreen';
+import AuthChoiceScreen from '../screens/AuthChoiceScreen';
 import { usePushNotifications } from '../hooks/usePushNotifications';
 
 const Stack = createNativeStackNavigator();
@@ -26,6 +28,8 @@ const AppNavigator = () => {
                     ) : (
                         <>
                             <Stack.Screen name="Loading" component={LoadingScreen} />
+                            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+                            <Stack.Screen name="AuthChoice" component={AuthChoiceScreen} />
                             <Stack.Screen name="Login" component={LoginScreen} />
                         </>
                     )}

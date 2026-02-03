@@ -15,7 +15,7 @@ import { departments } from "../data/departments";
 
 import Animated, { FadeInDown, FadeIn, FadeInRight } from "react-native-reanimated";
 
-const { width } = Dimensions.get("window");
+import { wp, hp, moderateScale } from "../utils/responsive";
 
 const DepartmentDetails = () => {
     const route = useRoute<any>();
@@ -106,7 +106,7 @@ const DepartmentDetails = () => {
                                     <Text style={styles.doctorName}>{doc.name}</Text>
                                     <Text style={styles.doctorSpec}>{doc.specialization}</Text>
                                     <Text style={styles.doctorExp}>{doc.experience}</Text>
-                                    <TouchableOpacity onPress={() => console.log("View Profile", doc.name)}>
+                                    <TouchableOpacity onPress={() => navigation.navigate("DoctorDetails", { doctor: doc })}>
                                         <Text style={styles.viewProfile}>View Profile →</Text>
                                     </TouchableOpacity>
                                 </Animated.View>
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: "#fff" },
     heroHeader: {
         width: "100%",
-        height: 300,
+        height: hp(35),
         justifyContent: "center",
         alignItems: "center",
     },
@@ -147,37 +147,37 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.5)",
         justifyContent: "center",
         alignItems: "center",
-        padding: 20,
+        padding: wp(5),
     },
     heroTitle: {
-        fontSize: 32,
+        fontSize: moderateScale(32),
         fontWeight: "700",
         color: "#fff",
-        marginBottom: 12,
+        marginBottom: hp(1.5),
         textAlign: "center",
     },
     heroSubtitle: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
         color: "#e5e7eb",
         textAlign: "center",
-        lineHeight: 24,
+        lineHeight: moderateScale(24),
     },
     content: {
-        padding: 20,
+        padding: wp(5),
     },
     section: {
-        marginBottom: 32,
+        marginBottom: hp(4),
     },
     sectionHeader: {
-        fontSize: 22,
+        fontSize: moderateScale(22),
         fontWeight: "700",
         color: "#111827",
-        marginBottom: 16,
+        marginBottom: hp(2),
     },
     descriptionText: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
         color: "#4b5563",
-        lineHeight: 24,
+        lineHeight: moderateScale(24),
     },
     servicesGrid: {
         flexDirection: "row",
@@ -186,96 +186,96 @@ const styles = StyleSheet.create({
     serviceItem: {
         width: "50%",
         flexDirection: "row",
-        marginBottom: 12,
-        paddingRight: 8,
+        marginBottom: hp(1.5),
+        paddingRight: wp(2),
     },
     serviceBullet: {
-        fontSize: 16,
-        color: "#1e40af", // deep blue
-        marginRight: 8,
+        fontSize: moderateScale(16),
+        color: "#1e40af",
+        marginRight: wp(2),
         fontWeight: 'bold',
     },
     serviceText: {
-        fontSize: 15,
+        fontSize: moderateScale(15),
         color: "#374151",
         flex: 1,
     },
     specialistsGrid: {
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "center", // Center cards if odd number
-        gap: 20,
+        justifyContent: "center",
+        gap: wp(4),
     },
     doctorCard: {
-        width: (width - 60) / 2, // 2 columns with spacing
+        width: wp(42),
         backgroundColor: "#fff",
-        borderRadius: 16,
-        padding: 16,
+        borderRadius: wp(4),
+        padding: wp(4),
         alignItems: "center",
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: { width: 0, height: hp(0.5) },
         shadowOpacity: 0.1,
         shadowRadius: 10,
         elevation: 5,
-        marginBottom: 10,
+        marginBottom: hp(1.5),
         borderWidth: 1,
         borderColor: "#f3f4f6",
     },
     doctorImage: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
-        marginBottom: 12,
+        width: wp(18),
+        height: wp(18),
+        borderRadius: wp(9),
+        marginBottom: hp(1.5),
     },
     doctorName: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
         fontWeight: "700",
         textAlign: "center",
         color: "#111827",
-        marginBottom: 4,
+        marginBottom: hp(0.5),
     },
     doctorSpec: {
-        fontSize: 13,
+        fontSize: moderateScale(13),
         color: "#4b5563",
         textAlign: "center",
-        marginBottom: 4,
+        marginBottom: hp(0.5),
     },
     doctorExp: {
-        fontSize: 12,
+        fontSize: moderateScale(12),
         color: "#6b7280",
-        marginBottom: 12,
+        marginBottom: hp(1.5),
     },
     viewProfile: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         color: "#2563eb",
         fontWeight: "600",
     },
     ctaSection: {
         alignItems: "center",
-        marginTop: 10,
-        marginBottom: 40,
-        paddingTop: 20,
+        marginTop: hp(1),
+        marginBottom: hp(5),
+        paddingTop: hp(2.5),
         borderTopWidth: 1,
         borderTopColor: "#f3f4f6",
     },
     ctaTitle: {
-        fontSize: 20,
+        fontSize: moderateScale(20),
         fontWeight: "700",
         color: "#111827",
         textAlign: "center",
-        marginBottom: 20,
+        marginBottom: hp(2.5),
     },
     ctaButton: {
-        backgroundColor: "#2563eb", // blue-600
-        paddingVertical: 16,
-        paddingHorizontal: 32,
-        borderRadius: 8,
+        backgroundColor: "#2563eb",
+        paddingVertical: hp(2),
+        paddingHorizontal: wp(8),
+        borderRadius: wp(2),
         width: "100%",
         alignItems: "center",
     },
     ctaButtonText: {
         color: "#fff",
-        fontSize: 16,
+        fontSize: moderateScale(16),
         fontWeight: "600",
     },
 });

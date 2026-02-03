@@ -9,7 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 
-const { width } = Dimensions.get('window');
+import { wp, hp, moderateScale } from '../utils/responsive';
 
 const services = [
     {
@@ -100,7 +100,7 @@ const services = [
     },
 ];
 
-const CARD_WIDTH = 150;
+const CARD_WIDTH = wp(40);
 const TOTAL_WIDTH = CARD_WIDTH * services.length * 2;
 
 const Services = () => {
@@ -158,44 +158,44 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     section: {
-        paddingVertical: 40,
-        paddingHorizontal: 16,
+        paddingVertical: hp(5),
+        paddingHorizontal: wp(4),
     },
     title: {
-        fontSize: 28,
+        fontSize: moderateScale(28),
         fontWeight: '700',
         textAlign: 'center',
         color: '#1e3a8a',
-        marginBottom: 32,
+        marginBottom: hp(4),
     },
     titleAccent: {
         color: '#10b981',
     },
     marqueeContainer: {
-        height: 180,
+        height: hp(22),
         overflow: 'hidden',
     },
     marquee: {
         flexDirection: 'row',
     },
     serviceCard: {
-        width: 150,
-        height: 160,
+        width: wp(40),
+        height: hp(20),
         backgroundColor: '#1e3a8a',
-        borderRadius: 12,
+        borderRadius: wp(3),
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 16,
+        marginRight: wp(4),
     },
     serviceIcon: {
-        fontSize: 32,
-        marginBottom: 8,
+        fontSize: moderateScale(32),
+        marginBottom: hp(1),
     },
     serviceName: {
-        fontSize: 12,
+        fontSize: moderateScale(12),
         fontWeight: '600',
         color: '#fff',
         textAlign: 'center',
-        paddingHorizontal: 8,
+        paddingHorizontal: wp(2),
     },
 });

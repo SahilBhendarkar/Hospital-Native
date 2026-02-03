@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, Animated, Dimensions } from 'react-nativ
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../context/AuthContext';
 
-const { width, height } = Dimensions.get('window');
+import { wp, hp, moderateScale } from '../utils/responsive';
 
 const LoadingScreen = () => {
     const navigation = useNavigation();
@@ -29,7 +29,6 @@ const LoadingScreen = () => {
         const timer = setTimeout(() => {
             if (!isLoading) {
                 if (token) {
-                    // User is authenticated, go to main app
                     navigation.reset({
                         index: 0,
                         routes: [{ name: 'Main' as never }],
@@ -37,7 +36,7 @@ const LoadingScreen = () => {
                 } else {
                     navigation.reset({
                         index: 0,
-                        routes: [{ name: 'Login' as never }],
+                        routes: [{ name: 'Onboarding' as never }],
                     });
                 }
             }
@@ -78,17 +77,17 @@ const styles = StyleSheet.create({
     logoContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 40,
+        padding: wp(10),
     },
     logo: {
-        width: width * 0.6,
-        height: height * 0.3,
+        width: wp(60),
+        height: wp(60),
         maxWidth: 300,
         maxHeight: 300,
-        marginBottom: 24,
+        marginBottom: hp(3),
     },
     appName: {
-        fontSize: 28,
+        fontSize: moderateScale(28),
         fontWeight: '700',
         color: '#ffffff',
         letterSpacing: 2,

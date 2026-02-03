@@ -5,6 +5,8 @@ import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
 import { useAuth } from '../context/AuthContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { wp, hp, moderateScale } from '../utils/responsive';
+
 const Profile = () => {
     const { user, logout } = useAuth();
 
@@ -25,7 +27,7 @@ const Profile = () => {
                     colors={['#667eea', '#764ba2']}
                     style={styles.avatarGradient}
                 >
-                    <Feather name="user" size={60} color="white" />
+                    <Feather name="user" size={wp(15)} color="white" />
                 </LinearGradient>
                 <Text style={styles.name}>{user?.name || 'Guest User'}</Text>
                 <Text style={styles.role}>{user?.role?.toUpperCase() || 'PATIENT'}</Text>
@@ -39,7 +41,7 @@ const Profile = () => {
                         style={styles.infoCard}
                     >
                         <View style={styles.infoIcon}>
-                            <Feather name={item.icon as any} size={20} color="#667eea" />
+                            <Feather name={item.icon as any} size={moderateScale(20)} color="#667eea" />
                         </View>
                         <View style={styles.infoContent}>
                             <Text style={styles.infoLabel}>{item.label}</Text>
@@ -54,7 +56,7 @@ const Profile = () => {
                 style={styles.actions}
             >
                 <TouchableOpacity style={styles.editButton}>
-                    <Feather name="edit-2" size={20} color="white" />
+                    <Feather name="edit-2" size={moderateScale(20)} color="white" />
                     <Text style={styles.editButtonText}>Edit Profile</Text>
                 </TouchableOpacity>
 
@@ -62,7 +64,7 @@ const Profile = () => {
                     style={styles.logoutButton}
                     onPress={logout}
                 >
-                    <Feather name="log-out" size={20} color="#ef4444" />
+                    <Feather name="log-out" size={moderateScale(20)} color="#ef4444" />
                     <Text style={styles.logoutButtonText}>Log Out</Text>
                 </TouchableOpacity>
             </Animated.View>
@@ -78,19 +80,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#f8fafc',
     },
     content: {
-        padding: 20,
+        padding: wp(5),
     },
     header: {
         alignItems: 'center',
-        marginVertical: 30,
+        marginVertical: hp(4),
     },
     avatarGradient: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
+        width: wp(30),
+        height: wp(30),
+        borderRadius: wp(15),
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 16,
+        marginBottom: hp(2),
         ...Platform.select({
             ios: {
                 shadowColor: '#000',
@@ -104,27 +106,27 @@ const styles = StyleSheet.create({
         }),
     },
     name: {
-        fontSize: 24,
+        fontSize: moderateScale(24),
         fontWeight: '700',
         color: '#1e293b',
-        marginBottom: 4,
+        marginBottom: hp(0.5),
     },
     role: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         fontWeight: '600',
         color: '#64748b',
         letterSpacing: 1.2,
     },
     section: {
-        marginBottom: 30,
+        marginBottom: hp(4),
     },
     infoCard: {
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
-        padding: 16,
-        borderRadius: 16,
-        marginBottom: 12,
+        padding: wp(4),
+        borderRadius: wp(4),
+        marginBottom: hp(1.5),
         ...Platform.select({
             ios: {
                 shadowColor: '#000',
@@ -138,42 +140,42 @@ const styles = StyleSheet.create({
         }),
     },
     infoIcon: {
-        width: 40,
-        height: 40,
-        borderRadius: 10,
+        width: wp(10),
+        height: wp(10),
+        borderRadius: wp(2.5),
         backgroundColor: 'rgba(102, 126, 234, 0.1)',
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 16,
+        marginRight: wp(4),
     },
     infoContent: {
         flex: 1,
     },
     infoLabel: {
-        fontSize: 12,
+        fontSize: moderateScale(12),
         color: '#64748b',
-        marginBottom: 2,
+        marginBottom: hp(0.3),
     },
     infoValue: {
-        fontSize: 16,
+        fontSize: moderateScale(16),
         fontWeight: '500',
         color: '#1e293b',
     },
     actions: {
-        gap: 12,
+        gap: hp(1.5),
     },
     editButton: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#667eea',
-        padding: 16,
-        borderRadius: 12,
-        gap: 8,
+        padding: wp(4),
+        borderRadius: wp(3),
+        gap: wp(2),
     },
     editButtonText: {
         color: 'white',
-        fontSize: 16,
+        fontSize: moderateScale(16),
         fontWeight: '600',
     },
     logoutButton: {
@@ -181,15 +183,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'transparent',
-        padding: 16,
-        borderRadius: 12,
+        padding: wp(4),
+        borderRadius: wp(3),
         borderWidth: 1,
         borderColor: '#fecaca',
-        gap: 8,
+        gap: wp(2),
     },
     logoutButtonText: {
         color: '#ef4444',
-        fontSize: 16,
+        fontSize: moderateScale(16),
         fontWeight: '600',
     },
 });

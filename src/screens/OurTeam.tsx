@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
-const { width } = Dimensions.get('window');
+import { wp, hp, moderateScale } from '../utils/responsive';
 
 const teamMembers = [
     {
@@ -89,40 +89,40 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#2a3de4',
-        paddingVertical: 24,
-        paddingHorizontal: 16,
+        paddingVertical: hp(3),
+        paddingHorizontal: wp(4),
     },
     headerSection: {
         position: 'relative',
-        paddingBottom: 32,
+        paddingBottom: hp(4),
     },
     headerBackground: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: '#1e3a8a',
-        borderBottomLeftRadius: 100,
-        borderBottomRightRadius: 100,
+        borderBottomLeftRadius: wp(25),
+        borderBottomRightRadius: wp(25),
     },
     title: {
-        fontSize: 28,
+        fontSize: moderateScale(28),
         fontWeight: '700',
         color: '#fff',
         textAlign: 'center',
         zIndex: 1,
     },
     cardsContainer: {
-        marginBottom: 24,
+        marginBottom: hp(3),
     },
     columnWrapper: {
         justifyContent: 'space-between',
-        marginBottom: 16,
+        marginBottom: hp(2),
     },
     teamCard: {
-        width: (width - 48) / 2,
+        width: wp(44),
         backgroundColor: '#fff',
-        borderRadius: 12,
+        borderRadius: wp(3),
         overflow: 'hidden',
         alignItems: 'center',
-        paddingVertical: 16,
+        paddingVertical: hp(2),
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
@@ -130,34 +130,34 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     teamImage: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
-        marginBottom: 12,
+        width: wp(20),
+        height: wp(20),
+        borderRadius: wp(10),
+        marginBottom: hp(1.5),
     },
     memberName: {
-        fontSize: 14,
+        fontSize: moderateScale(14),
         fontWeight: '600',
         color: '#1e3a8a',
-        marginBottom: 4,
+        marginBottom: hp(0.5),
     },
     specialty: {
-        fontSize: 12,
+        fontSize: moderateScale(12),
         color: '#666',
         textAlign: 'center',
     },
     viewAllButton: {
         backgroundColor: '#2563eb',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 6,
+        paddingVertical: hp(1.5),
+        paddingHorizontal: wp(8),
+        borderRadius: wp(1.5),
         alignSelf: 'center',
-        marginBottom: 16,
+        marginBottom: hp(2),
     },
     viewAllButtonText: {
         color: '#fff',
         fontWeight: '600',
-        fontSize: 14,
+        fontSize: moderateScale(14),
     },
 });
 
